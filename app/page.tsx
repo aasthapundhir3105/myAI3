@@ -152,7 +152,7 @@ export default function Chat() {
                     <Image src="/logo.png" alt="Logo" width={36} height={36} />
                   </AvatarFallback>
                 </Avatar>
-                <p className="tracking-tight">Chat with {AI_NAME}</p>
+                <p className="tracking-tight">{AI_NAME}</p>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
@@ -205,7 +205,7 @@ export default function Chat() {
                             {...field}
                             id="chat-form-message"
                             className="h-15 pr-15 pl-5 bg-card rounded-[20px]"
-                            placeholder="Type your message here..."
+                            placeholder="Paste ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
                             autoComplete="off"
@@ -246,7 +246,7 @@ export default function Chat() {
             </div>
           </div>
           <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline">Terms of Use</Link>&nbsp;Powered by&nbsp;<Link href="https://ringel.ai/" className="underline">Ringel.AI</Link>
+            © {new Date().getFullYear()} FSSAI Food Safety Analyzer &nbsp;|&nbsp; <Link href="/terms" className="underline">Terms</Link>
           </div>
         </div>
       </main>
