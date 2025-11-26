@@ -23,7 +23,7 @@ import { useEffect, useState, useRef } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
-import { IngredientSafetyChart } from '@/components/ui/safety-chart';
+import { IngredientSafetyChart } from '@/components/ui/safetychart';
 
 const formSchema = z.object({
   message: z
