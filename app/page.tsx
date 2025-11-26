@@ -191,30 +191,14 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
+        
+        {/* Main Chat Area with Examples ABOVE messages */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[88px] pb-[150px]">
           <div className="flex flex-col items-center justify-end min-h-full">
-            {isClient ? (
-              <>
-                <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
-                {status === "submitted" && (
-                  <div className="flex justify-start max-w-3xl w-full">
-                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="flex justify-center max-w-2xl w-full">
-                <Loader2 className="size-4 animate-spin text-muted-foreground" />
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/50 to-transparent dark:bg-black overflow-visible pt-13">
-          {/* Example Ingredients Buttons */}
-          {messages.length <= 1 && (
-            <div className="w-full px-5 pb-3 flex justify-center">
-              <div className="max-w-3xl w-full">
-                <p className="text-sm text-muted-foreground mb-2 text-center">Try example ingredients:</p>
+            {/* Example Buttons - Positioned safely above messages */}
+            {isClient && messages.length <= 1 && (
+              <div className="w-full max-w-3xl mb-6"> {/* Added margin-bottom */}
+                <p className="text-sm text-muted-foreground mb-3 text-center">Try example ingredients:</p>
                 <div className="flex gap-2 justify-center flex-wrap">
                   {exampleIngredients.map((example, index) => (
                     <Button
@@ -229,10 +213,29 @@ export default function Chat() {
                   ))}
                 </div>
               </div>
-            </div>
-          )}
-          
-          <div className="w-full px-5 pt-5 pb-1 items-center flex justify-center relative overflow-visible">
+            )}
+            
+            {/* Messages Area */}
+            {isClient ? (
+              <>
+                <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
+                {status === "submitted" && (
+                  <div className="flex justify-start max-w-3xl w-full mt-4">
+                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex justify-center max-w-2xl w-full">
+                <Loader2 className="size-4 animate-spin text-muted-foreground" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Input Area */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/50 to-transparent dark:bg-black overflow-visible pt-8">
+          <div className="w-full px-5 pb-1 items-center flex justify-center relative overflow-visible">
             <div className="message-fade-overlay" />
             <div className="max-w-3xl w-full">
               <form id="chat-form" onSubmit={form.handleSubmit(onSubmit)}>
