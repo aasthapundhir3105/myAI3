@@ -88,7 +88,7 @@ export function IngredientSafetyChart({ data }: SafetyChartProps) {
   };
 
   return (
-    <div className="w-full h-80 bg-white rounded-lg border border-gray-200 p-4">
+    <div className="w-full h-80 bg-white rounded-lg border border-gray-200 px-6 p-4">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
           Ingredient Safety Analysis
@@ -106,7 +106,7 @@ export function IngredientSafetyChart({ data }: SafetyChartProps) {
           <BarChart 
             data={chartData} 
             layout="vertical" 
-            margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+            margin={{ top: 5, right: 30, left: 150, bottom: 5 }}
           >
             <CartesianGrid 
               strokeDasharray="3 3" 
