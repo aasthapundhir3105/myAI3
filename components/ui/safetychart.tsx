@@ -129,8 +129,10 @@ export function IngredientSafetyChart({ data }: SafetyChartProps) {
             <Tooltip content={<CustomTooltip />} />
             <Bar 
               dataKey="score" 
+              <Bar 
               radius={[0, 4, 4, 0]}
-            >
+              barSize={20}
+             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
