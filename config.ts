@@ -30,10 +30,10 @@ function getDateAndTime(): string {
 
 export const DATE_AND_TIME = getDateAndTime();
 
-export const AI_NAME = "MyAI3";
-export const OWNER_NAME = "FirstName LastName";
+export const AI_NAME = "FSSAI Additive Analyzer";
+export const OWNER_NAME = "FSSAI Food Safety";
 
-export const WELCOME_MESSAGE = `Hello! I'm ${AI_NAME}, an AI assistant created by ${OWNER_NAME}.`
+export const WELCOME_MESSAGE = `Welcome! I'm your FSSAI food safety assistant. Paste any ingredient list below, and I'll analyze it for harmful additives, banned substances, and child safety risks. I'll also generate a safety score chart.`;
 
 export const CLEAR_CHAT_TEXT = "New";
 
