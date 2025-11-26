@@ -23,6 +23,7 @@ import { useEffect, useState, useRef } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, OWNER_NAME, WELCOME_MESSAGE } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
+import { IngredientSafetyChart } from '@/components/ui/safety-chart';
 
 const formSchema = z.object({
   message: z
@@ -76,6 +77,33 @@ export default function Chat() {
   const { messages, sendMessage, status, stop, setMessages } = useChat({
     messages: initialMessages,
   });
+
+  // Helper function to extract JSON from AI response
+  const extractSafetyData = (message: UIMessage) => {
+    if (message.role !== 'assistant') return null;
+    
+    // Look for JSON in text parts
+    const textParts = message.parts
+      .filter(part => part.type === 'text')
+      .map(part => 'text' in part ? part.text : '')
+      .join('');
+
+    // Try to find JSON pattern
+    const jsonMatch = textParts.match(/```json\n([\s\S]*?)\n```/);
+    if (jsonMatch) {
+      try {
+        const jsonData = JSON.parse(jsonMatch[1]);
+        // Validate the expected structure
+        if (jsonData.overall_score !== undefined && jsonData.ingredient_scores) {
+          return jsonData;
+        }
+      } catch (error) {
+        console.error('Failed to parse JSON from AI response:', error);
+      }
+    }
+    
+    return null;
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -238,10 +266,29 @@ export default function Chat() {
               </div>
             )}
             
-            {/* Messages Area */}
+            {/* Messages Area with Safety Charts */}
             {isClient ? (
               <>
-                <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
+                <MessageWall 
+                  messages={messages} 
+                  status={status} 
+                  durations={durations} 
+                  onDurationChange={handleDurationChange} 
+                />
+                
+                {/* Render safety charts for messages that have JSON data */}
+                {messages.map((message) => {
+                  const safetyData = extractSafetyData(message);
+                  if (safetyData) {
+                    return (
+                      <div key={`chart-${message.id}`} className="w-full max-w-3xl mt-6">
+                        <IngredientSafetyChart data={safetyData} />
+                      </div>
+                    );
+                  }
+                  return null;
+                }).filter(Boolean)}
+                
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
                     <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-blue-100 shadow-sm">
