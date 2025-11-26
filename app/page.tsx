@@ -136,6 +136,26 @@ export default function Chat() {
     toast.success("Chat cleared");
   }
 
+  // Example ingredient lists for quick testing
+  const exampleIngredients = [
+    {
+      name: "Safe Snack",
+      ingredients: "Maltodextrin, Natural Flavors, Sunflower Oil, Salt"
+    },
+    {
+      name: "Colorful Candy", 
+      ingredients: "E102 (Tartrazine), E110 (Sunset Yellow), E133 (Brilliant Blue), Sugar, Corn Syrup"
+    },
+    {
+      name: "Preserved Juice",
+      ingredients: "Potassium Sorbate, Sodium Benzoate, Ascorbic Acid, Artificial Sweeteners"
+    }
+  ];
+
+  const handleExampleClick = (ingredients: string) => {
+    form.setValue("message", ingredients);
+  };
+
   return (
     <div className="flex h-screen items-center justify-center font-sans dark:bg-black">
       <main className="w-full dark:bg-black h-screen relative">
@@ -153,15 +173,15 @@ export default function Chat() {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-2">
-                   <span className="text-xl">🧪</span> {/* Test tube icon */}
-                   <p className="tracking-tight">{AI_NAME}</p>
+                  <span className="text-xl">🧪</span> {/* Test tube icon */}
+                  <p className="tracking-tight">{AI_NAME}</p>
                 </div>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="cursor-pointer"
+                  className="cursor-pointer border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300"
                   onClick={clearChat}
                 >
                   <Plus className="size-4" />
@@ -190,6 +210,28 @@ export default function Chat() {
           </div>
         </div>
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/50 to-transparent dark:bg-black overflow-visible pt-13">
+          {/* Example Ingredients Buttons */}
+          {messages.length <= 1 && (
+            <div className="w-full px-5 pb-3 flex justify-center">
+              <div className="max-w-3xl w-full">
+                <p className="text-sm text-muted-foreground mb-2 text-center">Try example ingredients:</p>
+                <div className="flex gap-2 justify-center flex-wrap">
+                  {exampleIngredients.map((example, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300"
+                      onClick={() => handleExampleClick(example.ingredients)}
+                    >
+                      {example.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          
           <div className="w-full px-5 pt-5 pb-1 items-center flex justify-center relative overflow-visible">
             <div className="message-fade-overlay" />
             <div className="max-w-3xl w-full">
@@ -207,7 +249,7 @@ export default function Chat() {
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-15 pr-15 pl-5 bg-card rounded-[20px]"
+                            className="h-15 pr-15 pl-5 bg-card rounded-[20px] border-2 border-green-200 focus:border-green-500 transition-colors"
                             placeholder="Paste ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
@@ -221,7 +263,7 @@ export default function Chat() {
                           />
                           {(status == "ready" || status == "error") && (
                             <Button
-                              className="absolute right-3 top-3 rounded-full"
+                              className="absolute right-3 top-3 rounded-full bg-green-600 hover:bg-green-700 text-white transition-colors"
                               type="submit"
                               disabled={!field.value.trim()}
                               size="icon"
@@ -231,7 +273,7 @@ export default function Chat() {
                           )}
                           {(status == "streaming" || status == "submitted") && (
                             <Button
-                              className="absolute right-2 top-2 rounded-full"
+                              className="absolute right-2 top-2 rounded-full bg-red-600 hover:bg-red-700 text-white transition-colors"
                               size="icon"
                               onClick={() => {
                                 stop();
