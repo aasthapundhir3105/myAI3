@@ -152,7 +152,10 @@ export default function Chat() {
                     <Image src="/logo.png" alt="Logo" width={36} height={36} />
                   </AvatarFallback>
                 </Avatar>
-                <p className="tracking-tight">{AI_NAME}</p>
+                <div className="flex items-center gap-2">
+                   <span className="text-xl">🧪</span> {/* Test tube icon */}
+                   <p className="tracking-tight">{AI_NAME}</p>
+                </div>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
