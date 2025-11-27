@@ -6,11 +6,7 @@ interface FairyAnalysisProps {
   messageText: string;
   safetyData?: {
     overall_score: number;
-    ingredient_scores: Array<{
-      ingredient: string;
-      score: number;
-      status: string;
-    }>;
+    // ... other properties
   };
 }
 
