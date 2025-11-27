@@ -277,7 +277,7 @@ export default function Chat() {
               <ChatHeaderBlock />
               <ChatHeaderBlock className="justify-center items-center">
                 {/* Ingrid Icon Avatar */}
-                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-white rounded-full overflow-hidden">
+                <Avatar className="size-16 ring-2 ring-white shadow-lg bg-white rounded-full overflow-hidden">
                   <AvatarImage src="/icon.png" alt="Ingrid Icon" />
                   <AvatarFallback className="bg-white text-green-600 font-bold">
                     I
