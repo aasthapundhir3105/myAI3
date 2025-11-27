@@ -11,11 +11,13 @@ import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
 import {
   ArrowUp,
+  Image as ImageIcon,
   Loader2,
   Plus,
   Square,
   Sparkles,
   Wand2,
+  X,
 } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
@@ -29,10 +31,8 @@ import { IngredientSafetyChart } from "@/components/ui/safetychart";
 import { MessageReadAloud } from "@/components/messages/message-read-aloud";
 
 const formSchema = z.object({
-  message: z
-    .string()
-    .min(1, "Message cannot be empty.")
-    .max(2000, "Message must be at most 2000 characters."),
+  // ✅ Allow empty string (we'll validate against image in onSubmit)
+  message: z.string().max(2000, "Message must be at most 2000 characters."),
 });
 
 const STORAGE_KEY = "chat-messages";
@@ -71,7 +71,7 @@ const saveMessagesToStorage = (
     const data: StorageData = { messages, durations };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
-    console.error("Failed to save messages to localStorage:", error);
+    console.error("Failed to save messages from localStorage:", error);
   }
 };
 
@@ -85,6 +85,11 @@ export default function Chat() {
   const [isClient, setIsClient] = useState(false);
   const [durations, setDurations] = useState<Record<string, number>>({});
   const welcomeMessageShownRef = useRef<boolean>(false);
+
+  // 🌟 Image attachment state
+  const [attachedImage, setAttachedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const stored =
     typeof window !== "undefined"
@@ -207,9 +212,76 @@ export default function Chat() {
     },
   });
 
+  // 🌟 Image handlers
+  const handleImageButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (photo of the label).");
+      return;
+    }
+
+    // Optional size guard (e.g. 5MB)
+    const maxSizeMb = 5;
+    if (file.size > maxSizeMb * 1024 * 1024) {
+      toast.error(`Image is too large. Please upload a file under ${maxSizeMb}MB.`);
+      return;
+    }
+
+    // Clean previous preview
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
+
+    const url = URL.createObjectURL(file);
+    setAttachedImage(file);
+    setImagePreviewUrl(url);
+  };
+
+  const clearAttachedImage = () => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
+    setAttachedImage(null);
+    setImagePreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   function onSubmit(data: z.infer<typeof formSchema>) {
-    sendMessage({ text: data.message });
+    const trimmed = data.message.trim();
+
+    // If no text and no image → block
+    if (!trimmed && !attachedImage) {
+      toast.error("Please enter a message or upload a label photo.");
+      return;
+    }
+
+    let finalText = trimmed;
+
+    // If ONLY an image is attached, create a sensible default message
+    if (!trimmed && attachedImage) {
+      finalText =
+        "I've uploaded a photo of a product label / ingredient list. Please help me understand the ingredient safety based on that image.";
+    } else if (trimmed && attachedImage) {
+      // If both text + image, add a gentle note
+      finalText = `${trimmed}\n\n(Also, I've uploaded a photo of the product label / ingredient list for context.)`;
+    }
+
+    sendMessage({ text: finalText });
+
     form.reset();
+
+    // Reset image preview after sending
+    clearAttachedImage();
   }
 
   function clearChat() {
@@ -332,7 +404,7 @@ export default function Chat() {
         </div>
 
         {/* Main Chat Area with Magical Background */}
-        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
+        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[190px]">
           <div className="flex flex-col items-center justify-end min-h-full">
             {/* Magical Example Cards */}
             {isClient && messages.length <= 1 && (
@@ -467,12 +539,13 @@ export default function Chat() {
                         >
                           Message
                         </FieldLabel>
-                        <div className="relative h-13 group">
+                        <div className="relative group">
+                          {/* Input + send/stop buttons */}
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-16 pr-16 pl-6 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-green-200 focus:border-green-400 focus:ring-2 focus:ring-green-100 shadow-lg transition-all duration-300 text-base placeholder-green-400/60"
-                            placeholder="✨ Share your ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
+                            className="h-16 pr-16 pl-12 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-green-200 focus:border-green-400 focus:ring-2 focus:ring-green-100 shadow-lg transition-all duration-300 text-base placeholder-green-400/60"
+                            placeholder="✨ Share your ingredient list here... (or use the label photo button)"
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
                             autoComplete="off"
@@ -483,20 +556,35 @@ export default function Chat() {
                               }
                             }}
                           />
-                          {(status == "ready" || status == "error") && (
+
+                          {/* 📸 Image upload button inside input (left) */}
+                          <button
+                            type="button"
+                            onClick={handleImageButtonClick}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 border border-green-200 bg-white hover:bg-green-50 hover:border-green-300 shadow-sm transition-all duration-200 flex items-center justify-center"
+                          >
+                            <ImageIcon className="size-4 text-green-500" />
+                          </button>
+
+                          {/* Send / Stop buttons (right) */}
+                          {(status === "ready" || status === "error") && (
                             <Button
                               className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                               type="submit"
-                              disabled={!field.value.trim()}
+                              disabled={
+                                !field.value.trim() && !attachedImage
+                              }
                               size="icon"
                             >
                               <ArrowUp className="size-5" />
                             </Button>
                           )}
-                          {(status == "streaming" || status == "submitted") && (
+                          {(status === "streaming" ||
+                            status === "submitted") && (
                             <Button
                               className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                               size="icon"
+                              type="button"
                               onClick={() => {
                                 stop();
                               }}
@@ -505,11 +593,52 @@ export default function Chat() {
                             </Button>
                           )}
                         </div>
+
+                        {/* Attached image preview pill */}
+                        {imagePreviewUrl && attachedImage && (
+                          <div className="mt-2 flex items-center justify-between rounded-xl border border-green-100 bg-green-50/70 px-3 py-2 text-xs shadow-sm">
+                            <div className="flex items-center gap-2">
+                              <div className="h-8 w-8 rounded-lg overflow-hidden border border-green-200 bg-white">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={imagePreviewUrl}
+                                  alt="Attached label"
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-green-700">
+                                  Label photo attached
+                                </span>
+                                <span className="text-[10px] text-green-700/70 truncate max-w-[180px]">
+                                  {attachedImage.name}
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={clearAttachedImage}
+                              className="ml-3 rounded-full p-1 hover:bg-green-100 text-green-700/80"
+                              aria-label="Remove attached image"
+                            >
+                              <X className="size-3" />
+                            </button>
+                          </div>
+                        )}
                       </Field>
                     )}
                   />
                 </FieldGroup>
               </form>
+
+              {/* Hidden file input for image upload */}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleImageChange}
+              />
             </div>
           </div>
 
