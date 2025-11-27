@@ -24,7 +24,7 @@ import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UIMessage } from "ai";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, type ChangeEvent } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Link from "next/link";
 import { IngredientSafetyChart } from "@/components/ui/safetychart";
@@ -71,7 +71,7 @@ const saveMessagesToStorage = (
     const data: StorageData = { messages, durations };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
-    console.error("Failed to save messages from localStorage:", error);
+    console.error("Failed to save messages to localStorage:", error);
   }
 };
 
@@ -219,7 +219,7 @@ export default function Chat() {
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -228,7 +228,6 @@ export default function Chat() {
       return;
     }
 
-    // Optional size guard (e.g. 5MB)
     const maxSizeMb = 5;
     if (file.size > maxSizeMb * 1024 * 1024) {
       toast.error(`Image is too large. Please upload a file under ${maxSizeMb}MB.`);
@@ -276,11 +275,15 @@ export default function Chat() {
       finalText = `${trimmed}\n\n(Also, I've uploaded a photo of the product label / ingredient list for context.)`;
     }
 
-    sendMessage({ text: finalText });
+    const filesToSend = attachedImage ? [attachedImage] : undefined;
+
+    // 🔗 IMPORTANT: send the image to the backend as `files`
+    sendMessage({
+      text: finalText,
+      files: filesToSend,
+    });
 
     form.reset();
-
-    // Reset image preview after sending
     clearAttachedImage();
   }
 
