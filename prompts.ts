@@ -1,4 +1,3 @@
-import { DATE_AND_TIME, OWNER_NAME } from './config';
 import { AI_NAME } from './config';
 
 export const IDENTITY_PROMPT = `
@@ -77,43 +76,40 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const ANALYSIS_STRUCTURE_PROMPT = `
-CRITICAL: NEVER SHOW THE JSON CODE TO USERS. It's only for the chart system.
+REQUIRED OUTPUT FORMAT FOR INGREDIENT ANALYSIS:
 
-REQUIRED OUTPUT FORMAT:
+1. INGREDIENT-BY-INGREDIENT ANALYSIS:
+   - List each ingredient with safety status
+   - FSSAI Status: [Approved/Restricted/Banned/Limited]
+   - FDA Status: [GRAS/Restricted/Banned]  
+   - Safety Score: 0-100 (100 = completely safe)
+   - Child Safety: [Safe/Caution/Warning/Avoid]
+   - Key Risks: [Brief risk description]
 
-🧚♂️ *waves magic wand* Let me analyze these ingredients!
+2. OVERALL SAFETY ASSESSMENT:
+   - Overall Safety Score: 0-100
+   - Banned Ingredients Found: [List if any]
+   - High-Risk Ingredients: [List with reasons]
+   - Child Safety Warning: [Yes/No with details]
 
-✨ **QUICK VERDICT**
-Overall Safety: [Score]/100 - [Emoji] [Brief Status]
-
-🌈 **INGREDIENT BREAKDOWN**
-• [Ingredient 1]: [Score]/100 - [Status Emoji] [Brief Note]
-• [Ingredient 2]: [Score]/100 - [Status Emoji] [Brief Note]
-
-🛡️ **SPECIAL CONSIDERATIONS**
-**Children:** [Child safety info]
-**Dietary:** [Vegan/Keto/PCOS compatibility]
-**Allergies:** [Common triggers]
-
-💫 **MY MAGICAL ADVICE**
-[Specific recommendations]
-- Immediate actions if banned ingredients found
-- Safer alternatives for risky ingredients  
-- Special considerations for children
-
-🎨 **VISUAL DATA (Hidden from users - for charts only)**
+3. VISUAL DATA FOR CHARTS (Include as JSON at end):
 \`\`\`json
 {
   "overall_score": 85,
   "ingredient_scores": [
     {"ingredient": "E102", "score": 30, "status": "warning"},
-    {"ingredient": "Maltodextrin", "score": 70, "status": "caution"}
-  ]
+    {"ingredient": "Maltodextrin", "score": 90, "status": "safe"},
+    {"ingredient": "Sodium Benzoate", "score": 70, "status": "caution"}
+  ],
+  "banned_ingredients": ["E102"],
+  "child_safety_warnings": ["E102 - Hyperactivity in children"]
 }
 \`\`\`
 
-📚 **SOURCES**
-[1] [FSSAI Regulation](url)
+4. RECOMMENDATIONS:
+   - Immediate actions if banned ingredients found
+   - Safer alternatives for risky ingredients
+   - Special considerations for children
 
 NOTE: This format is ONLY for ingredient analysis. For general conversation, respond naturally.
 `;
@@ -160,5 +156,4 @@ CRITICAL INSTRUCTIONS:
 - You MUST analyze EVERY ingredient when in analysis mode
 - You MUST include JSON data at the end when in analysis mode
 - You MUST check both FSSAI and FDA regulations for ingredients
-- You MUST hide the JSON code from users - it's only for the chart system
 `;
