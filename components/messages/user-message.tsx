@@ -5,10 +5,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 export function UserMessage({ message }: { message: UIMessage }) {
   return (
     <div className="w-full flex justify-end">
-      <div className="flex max-w-3xl items-start gap-3 flex-row-reverse">
+      <div className="flex max-w-3xl items-end gap-2 flex-row-reverse">
         {/* User avatar on the right */}
-        <Avatar className="h-8 w-8 shadow-sm">
-          <AvatarFallback className="bg-blue-600 text-white text-[10px] font-semibold">
+        <Avatar className="h-8 w-8 rounded-full border border-blue-300 shadow-sm bg-white">
+          <AvatarFallback className="h-8 w-8 aspect-square rounded-full bg-blue-600 text-white text-[10px] font-semibold flex items-center justify-center">
             You
           </AvatarFallback>
         </Avatar>
