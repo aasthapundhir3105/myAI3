@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Loader2, Plus, Square, Sparkles, Shield, Wand2 } from "lucide-react";
+import { ArrowUp, Loader2, Plus, Square, Sparkles, Wand2 } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
@@ -21,10 +21,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UIMessage } from "ai";
 import { useEffect, useState, useRef } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
-import Image from "next/image";
 import Link from "next/link";
-import { IngredientSafetyChart } from '@/components/ui/safetychart';
-import { MessageReadAloud } from '@/components/messages/message-read-aloud';
+import { IngredientSafetyChart } from "@/components/ui/safetychart";
+import { MessageReadAloud } from "@/components/messages/message-read-aloud";
 
 const formSchema = z.object({
   message: z
@@ -33,15 +32,18 @@ const formSchema = z.object({
     .max(2000, "Message must be at most 2000 characters."),
 });
 
-const STORAGE_KEY = 'chat-messages';
+const STORAGE_KEY = "chat-messages";
 
 type StorageData = {
   messages: UIMessage[];
   durations: Record<string, number>;
 };
 
-const loadMessagesFromStorage = (): { messages: UIMessage[]; durations: Record<string, number> } => {
-  if (typeof window === 'undefined') return { messages: [], durations: {} };
+const loadMessagesFromStorage = (): {
+  messages: UIMessage[];
+  durations: Record<string, number>;
+} => {
+  if (typeof window === "undefined") return { messages: [], durations: {} };
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return { messages: [], durations: {} };
@@ -52,19 +54,28 @@ const loadMessagesFromStorage = (): { messages: UIMessage[]; durations: Record<s
       durations: parsed.durations || {},
     };
   } catch (error) {
-    console.error('Failed to load messages from localStorage:', error);
+    console.error("Failed to load messages from localStorage:", error);
     return { messages: [], durations: {} };
   }
 };
 
-const saveMessagesToStorage = (messages: UIMessage[], durations: Record<string, number>) => {
-  if (typeof window === 'undefined') return;
+const saveMessagesToStorage = (
+  messages: UIMessage[],
+  durations: Record<string, number>
+) => {
+  if (typeof window === "undefined") return;
   try {
     const data: StorageData = { messages, durations };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (error) {
-    console.error('Failed to save messages to localStorage:', error);
+    console.error("Failed to save messages to localStorage:", error);
   }
+};
+
+// Helper: strip JSON blocks (```json ... ```) from assistant text so they don't show in UI
+const stripJsonBlocks = (text: string): string => {
+  if (!text) return text;
+  return text.replace(/```json[\s\S]*?```/g, "").trim();
 };
 
 export default function Chat() {
@@ -72,22 +83,25 @@ export default function Chat() {
   const [durations, setDurations] = useState<Record<string, number>>({});
   const welcomeMessageShownRef = useRef<boolean>(false);
 
-  const stored = typeof window !== 'undefined' ? loadMessagesFromStorage() : { messages: [], durations: {} };
+  const stored =
+    typeof window !== "undefined"
+      ? loadMessagesFromStorage()
+      : { messages: [], durations: {} };
   const [initialMessages] = useState<UIMessage[]>(stored.messages);
 
   const { messages, sendMessage, status, stop, setMessages } = useChat({
     messages: initialMessages,
   });
 
-  // Helper function to extract JSON from AI response
+  // Helper function to extract JSON from AI response for chart
   const extractSafetyData = (message: UIMessage) => {
-    if (message.role !== 'assistant') return null;
-    
+    if (message.role !== "assistant") return null;
+
     // Look for JSON in text parts
     const textParts = message.parts
-      .filter(part => part.type === 'text')
-      .map(part => 'text' in part ? part.text : '')
-      .join('');
+      .filter((part) => part.type === "text")
+      .map((part) => ("text" in part ? part.text : ""))
+      .join("");
 
     // Try to find JSON pattern
     const jsonMatch = textParts.match(/```json\n([\s\S]*?)\n```/);
@@ -95,43 +109,44 @@ export default function Chat() {
       try {
         const jsonData = JSON.parse(jsonMatch[1]);
         // Validate the expected structure
-        if (jsonData.overall_score !== undefined && jsonData.ingredient_scores) {
+        if (
+          jsonData.overall_score !== undefined &&
+          jsonData.ingredient_scores
+        ) {
           return jsonData;
         }
       } catch (error) {
-        console.error('Failed to parse JSON from AI response:', error);
+        console.error("Failed to parse JSON from AI response:", error);
       }
     }
-    
+
     return null;
   };
 
   // Helper to extract text from a message
   const getMessageText = (message: UIMessage): string => {
     return message.parts
-      .filter(part => part.type === 'text')
-      .map(part => 'text' in part ? part.text : '')
-      .join(' ');
+      .filter((part) => part.type === "text")
+      .map((part) => ("text" in part ? part.text : ""))
+      .join(" ");
   };
 
   // Initialize speech synthesis
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
       const loadVoices = () => {
-        // Voices are now loaded
-        console.log('Fairy voices ready!');
+        console.log("Fairy voices ready!");
       };
-      
-      window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
-      
-      // Try to load voices immediately
+
+      window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+
       if (window.speechSynthesis.getVoices().length > 0) {
         loadVoices();
       }
-      
+
       return () => {
-        window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
-        window.speechSynthesis.cancel(); // Clean up on unmount
+        window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+        window.speechSynthesis.cancel();
       };
     }
   }, []);
@@ -140,6 +155,7 @@ export default function Chat() {
     setIsClient(true);
     setDurations(stored.durations);
     setMessages(stored.messages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -157,7 +173,11 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    if (isClient && initialMessages.length === 0 && !welcomeMessageShownRef.current) {
+    if (
+      isClient &&
+      initialMessages.length === 0 &&
+      !welcomeMessageShownRef.current
+    ) {
       const welcomeMessage: UIMessage = {
         id: `welcome-${Date.now()}`,
         role: "assistant",
@@ -187,16 +207,15 @@ export default function Chat() {
   }
 
   function clearChat() {
-    // Stop any ongoing speech
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
-    
+
     const newMessages: UIMessage[] = [];
     const newDurations = {};
     setMessages(newMessages);
-    setDurations(newDurations);
-    saveMessagesToStorage(newMessages, newDurations);
+    setDurations(newDurations as Record<string, number>);
+    saveMessagesToStorage(newMessages, newDurations as Record<string, number>);
     toast.success("Magic cleared! ✨");
   }
 
@@ -204,24 +223,49 @@ export default function Chat() {
   const exampleIngredients = [
     {
       name: "🥣 Breakfast Cereal",
-      ingredients: "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
-      color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
+      ingredients:
+        "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
+      color:
+        "from-amber-100 to-orange-100 border-amber-200 text-amber-700",
     },
     {
-      name: "🧃 Fruit Juice Drink", 
-      ingredients: "Water, Sugar, Concentrated Apple Juice (10%), Citric Acid, Ascorbic Acid (Vitamin C), Natural Flavors, Sodium Citrate, Maltodextrin, Acesulfame K, Sucralose, E102 (Tartrazine), E110 (Sunset Yellow)",
-      color: "from-orange-100 to-red-100 border-orange-200 text-orange-700"
+      name: "🧃 Fruit Juice Drink",
+      ingredients:
+        "Water, Sugar, Concentrated Apple Juice (10%), Citric Acid, Ascorbic Acid (Vitamin C), Natural Flavors, Sodium Citrate, Maltodextrin, Acesulfame K, Sucralose, E102 (Tartrazine), E110 (Sunset Yellow)",
+      color: "from-orange-100 to-red-100 border-orange-200 text-orange-700",
     },
     {
       name: "🍜 Instant Noodles",
-      ingredients: "Wheat Flour, Palm Oil, Salt, Sugar, Monosodium Glutamate (E621), Guar Gum, Sodium Carbonate, Potassium Carbonate, Sodium Tripolyphosphate, Turmeric Extract, Soy Lecithin",
-      color: "from-yellow-100 to-amber-100 border-yellow-200 text-yellow-700"
-    }
+      ingredients:
+        "Wheat Flour, Palm Oil, Salt, Sugar, Monosodium Glutamate (E621), Guar Gum, Sodium Carbonate, Potassium Carbonate, Sodium Tripolyphosphate, Turmeric Extract, Soy Lecithin",
+      color:
+        "from-yellow-100 to-amber-100 border-yellow-200 text-yellow-700",
+    },
   ];
 
   const handleExampleClick = (ingredients: string) => {
     form.setValue("message", ingredients);
   };
+
+  // Create a cleaned version of messages for display (JSON removed from assistant text)
+  const displayMessages: UIMessage[] = messages.map((message) => {
+    if (message.role !== "assistant") return message;
+
+    const cleanedParts = message.parts.map((part) => {
+      if (part.type === "text" && "text" in part) {
+        return {
+          ...part,
+          text: stripJsonBlocks(part.text ?? ""),
+        };
+      }
+      return part;
+    });
+
+    return {
+      ...message,
+      parts: cleanedParts,
+    };
+  });
 
   return (
     <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
@@ -262,7 +306,7 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
-        
+
         {/* Main Chat Area with Magical Background */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
           <div className="flex flex-col items-center justify-end min-h-full">
@@ -286,72 +330,90 @@ export default function Chat() {
                     >
                       <div className="flex items-start justify-between mb-2">
                         <span className="font-semibold text-sm">
-                          <span className="text-xl mr-1">{example.name.split(' ')[0]}</span>
-                          {example.name.split(' ').slice(1).join(' ')}
+                          <span className="text-xl mr-1">
+                            {example.name.split(" ")[0]}
+                          </span>
+                          {example.name.split(" ").slice(1).join(" ")}
                         </span>
                         <ArrowUp className="size-4 opacity-0 group-hover:opacity-100 transition-opacity rotate-45" />
                       </div>
-                      <p className="text-xs opacity-70 leading-relaxed">{example.ingredients}</p>
+                      <p className="text-xs opacity-70 leading-relaxed">
+                        {example.ingredients}
+                      </p>
                     </button>
                   ))}
                 </div>
-                
+
                 {/* Magical Divider */}
                 <div className="flex items-center my-8">
                   <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
-                  <span className="px-4 text-green-400 text-sm font-medium">or share your own magic</span>
+                  <span className="px-4 text-green-400 text-sm font-medium">
+                    or share your own magic
+                  </span>
                   <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
                 </div>
               </div>
             )}
-            
+
             {/* Messages Area with Safety Charts & Read Aloud */}
             {isClient ? (
               <>
-                <MessageWall 
-                  messages={messages} 
-                  status={status} 
-                  durations={durations} 
-                  onDurationChange={handleDurationChange} 
+                <MessageWall
+                  messages={displayMessages}
+                  status={status}
+                  durations={durations}
+                  onDurationChange={handleDurationChange}
                 />
-                
+
                 {/* Add Read Aloud buttons for assistant messages */}
                 {messages
-                  .filter(message => message.role === 'assistant')
-                  .map(message => {
-                    const messageText = getMessageText(message);
-                    // Don't show for empty messages or welcome message
-                    if (!messageText || messageText === WELCOME_MESSAGE) return null;
-                    
+                  .filter((message) => message.role === "assistant")
+                  .map((message) => {
+                    const rawText = getMessageText(message);
+                    const messageText = stripJsonBlocks(rawText);
+
+                    if (!messageText || messageText === WELCOME_MESSAGE)
+                      return null;
+
                     return (
-                      <div key={`read-aloud-${message.id}`} className="w-full max-w-3xl flex justify-start mt-2">
-                        <MessageReadAloud 
-                          text={messageText} 
-                          messageId={message.id} 
+                      <div
+                        key={`read-aloud-${message.id}`}
+                        className="w-full max-w-3xl flex justify-start mt-2"
+                      >
+                        <MessageReadAloud
+                          text={messageText}
+                          messageId={message.id}
                         />
                       </div>
                     );
                   })
                   .filter(Boolean)}
-                
+
                 {/* Render safety charts for messages that have JSON data */}
-                {messages.map((message) => {
-                  const safetyData = extractSafetyData(message);
-                  if (safetyData) {
-                    return (
-                      <div key={`chart-${message.id}`} className="w-full max-w-3xl mt-6">
-                        <IngredientSafetyChart data={safetyData} />
-                      </div>
-                    );
-                  }
-                  return null;
-                }).filter(Boolean)}
-                
+                {messages
+                  .map((message) => {
+                    const safetyData = extractSafetyData(message);
+                    if (safetyData) {
+                      return (
+                        <div
+                          key={`chart-${message.id}`}
+                          className="w-full max-w-3xl mt-6"
+                        >
+                          <IngredientSafetyChart data={safetyData} />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })
+                  .filter(Boolean)}
+
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
                     <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-green-100 shadow-sm">
                       <Loader2 className="size-4 animate-spin text-green-600" />
-                      <span className="text-sm text-green-700 font-medium">Waving my magic wand...</span>
+                      <span className="text-sm text-green-700 font-medium">
+                        Waving my magic wand...
+                      </span>
                     </div>
                   </div>
                 )}
@@ -375,7 +437,10 @@ export default function Chat() {
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor="chat-form-message" className="sr-only">
+                        <FieldLabel
+                          htmlFor="chat-form-message"
+                          className="sr-only"
+                        >
                           Message
                         </FieldLabel>
                         <div className="relative h-13 group">
@@ -423,14 +488,21 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          
+
           {/* Magical Footer */}
           <div className="w-full px-5 py-4 items-center flex justify-center">
             <div className="max-w-3xl w-full">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-4 text-green-500/70">
-                  <span>© {new Date().getFullYear()} Ingrid - The Ingredient Fairy</span>
-                  <Link href="/terms" className="hover:text-green-600 transition-colors font-medium">Terms</Link>
+                  <span>
+                    © {new Date().getFullYear()} Ingrid - The Ingredient Fairy
+                  </span>
+                  <Link
+                    href="/terms"
+                    className="hover:text-green-600 transition-colors font-medium"
+                  >
+                    Terms
+                  </Link>
                 </div>
                 <div className="flex items-center gap-2 text-blue-500/70">
                   <Wand2 className="size-3" />
