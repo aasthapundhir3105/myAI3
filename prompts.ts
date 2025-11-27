@@ -75,6 +75,7 @@ export const CITATIONS_PROMPT = `
 - For web sources, prioritize official government websites (.gov, .in, .eu)
 - Never use [Source #] without providing the actual URL and context
 `;
+
 export const ANALYSIS_STRUCTURE_PROMPT = `
 CRITICAL: NEVER SHOW THE JSON CODE TO USERS. It's only for the chart system.
 
@@ -96,6 +97,9 @@ Overall Safety: [Score]/100 - [Emoji] [Brief Status]
 
 💫 **MY MAGICAL ADVICE**
 [Specific recommendations]
+- Immediate actions if banned ingredients found
+- Safer alternatives for risky ingredients  
+- Special considerations for children
 
 🎨 **VISUAL DATA (Hidden from users - for charts only)**
 \`\`\`json
@@ -156,4 +160,5 @@ CRITICAL INSTRUCTIONS:
 - You MUST analyze EVERY ingredient when in analysis mode
 - You MUST include JSON data at the end when in analysis mode
 - You MUST check both FSSAI and FDA regulations for ingredients
+- You MUST hide the JSON code from users - it's only for the chart system
 `;
