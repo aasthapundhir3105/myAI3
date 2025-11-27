@@ -6,14 +6,17 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Loader2, Plus, Square, Sparkles, Wand2 } from "lucide-react";
+import {
+  ArrowUp,
+  Loader2,
+  Plus,
+  Square,
+  Sparkles,
+  Wand2,
+} from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
@@ -145,7 +148,10 @@ export default function Chat() {
       }
 
       return () => {
-        window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+        window.speechSynthesis.removeEventListener(
+          "voiceschanged",
+          loadVoices
+        );
         window.speechSynthesis.cancel();
       };
     }
@@ -308,16 +314,18 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
-        
+
         {/* Safety disclaimer banner */}
         <div className="fixed top-[72px] left-0 right-0 z-40 flex justify-center px-4">
           <div className="max-w-3xl w-full">
             <div className="mt-1 text-[11px] md:text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-4 py-1 shadow-sm flex items-center gap-2">
               <span className="text-sm">⚠️</span>
               <p className="leading-snug">
-                Ingrid shares general ingredient information and is <span className="font-semibold">not</span> a substitute
-                for medical or dietary advice. For allergies, pregnancy, children or medical conditions, please consult a
-                doctor or qualified professional.
+                Ingrid shares general ingredient information and is{" "}
+                <span className="font-semibold">not</span> a substitute for
+                medical or dietary advice. For allergies, pregnancy, children or
+                medical conditions, please consult a doctor or qualified
+                professional.
               </p>
             </div>
           </div>
@@ -517,7 +525,7 @@ export default function Chat() {
                     href="/terms"
                     className="hover:text-green-600 transition-colors font-medium"
                   >
-                    Terms
+                    Safety &amp; Terms
                   </Link>
                 </div>
                 <div className="flex items-center gap-2 text-blue-500/70">
