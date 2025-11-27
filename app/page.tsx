@@ -268,4 +268,253 @@ export default function Chat() {
   });
 
   return (
-    <div className="fle
+    <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
+      <main className="w-full bg-transparent h-screen relative">
+        {/* Magical Header with Fairy Gradient */}
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white/90 via-white/70 to-transparent backdrop-blur-sm border-b border-green-100 overflow-visible pb-16">
+          <div className="relative overflow-visible">
+            <ChatHeader>
+              <ChatHeaderBlock />
+              <ChatHeaderBlock className="justify-center items-center">
+                {/* Ingrid Icon Avatar */}
+                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-white rounded-full overflow-hidden">
+                  <AvatarImage src="/icon.png" alt="Ingrid Icon" />
+                  <AvatarFallback className="bg-white text-green-600 font-bold">
+                    I
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex items-center gap-3 ml-3">
+                  <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-green-100">
+                    <Wand2 className="size-5 text-green-600" />
+                    <p className="tracking-tight text-lg font-semibold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                      {AI_NAME}
+                    </p>
+                    <Sparkles className="size-4 text-yellow-400" />
+                  </div>
+                </div>
+              </ChatHeaderBlock>
+              <ChatHeaderBlock className="justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 shadow-sm font-medium"
+                  onClick={clearChat}
+                >
+                  <Plus className="size-4" />
+                  {CLEAR_CHAT_TEXT}
+                </Button>
+              </ChatHeaderBlock>
+            </ChatHeader>
+          </div>
+        </div>
+
+        {/* Main Chat Area with Magical Background */}
+        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
+          <div className="flex flex-col items-center justify-end min-h-full">
+            {/* Magical Example Cards */}
+            {isClient && messages.length <= 1 && (
+              <div className="w-full max-w-4xl mb-8 animate-in fade-in duration-700">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                    Wave My Wand Over Your Ingredients! 🧚♂️
+                  </h2>
+                  <p className="text-green-600/70 text-sm font-medium">
+                    Try a magical example or share your own ingredient list
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {exampleIngredients.map((example, index) => (
+                    <button
+                      key={index}
+                      className={`p-4 rounded-2xl border-2 bg-gradient-to-br ${example.color} shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 text-left group`}
+                      onClick={() => handleExampleClick(example.ingredients)}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="font-semibold text-sm">
+                          <span className="text-xl mr-1">
+                            {example.name.split(" ")[0]}
+                          </span>
+                          {example.name.split(" ").slice(1).join(" ")}
+                        </span>
+                        <ArrowUp className="size-4 opacity-0 group-hover:opacity-100 transition-opacity rotate-45" />
+                      </div>
+                      <p className="text-xs opacity-70 leading-relaxed">
+                        {example.ingredients}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Magical Divider */}
+                <div className="flex items-center my-8">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
+                  <span className="px-4 text-green-400 text-sm font-medium">
+                    or share your own magic
+                  </span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
+                </div>
+              </div>
+            )}
+
+            {/* Messages Area with Safety Charts & Read Aloud */}
+            {isClient ? (
+              <>
+                <MessageWall
+                  messages={displayMessages}
+                  status={status}
+                  durations={durations}
+                  onDurationChange={handleDurationChange}
+                />
+
+                {/* Add Read Aloud buttons for assistant messages */}
+                {messages
+                  .filter((message) => message.role === "assistant")
+                  .map((message) => {
+                    const rawText = getMessageText(message);
+                    const messageText = stripJsonBlocks(rawText);
+
+                    if (!messageText || messageText === WELCOME_MESSAGE)
+                      return null;
+
+                    return (
+                      <div
+                        key={`read-aloud-${message.id}`}
+                        className="w-full max-w-3xl flex justify-start mt-2"
+                      >
+                        <MessageReadAloud
+                          text={messageText}
+                          messageId={message.id}
+                        />
+                      </div>
+                    );
+                  })
+                  .filter(Boolean)}
+
+                {/* Render safety charts for messages that have JSON data */}
+                {messages
+                  .map((message) => {
+                    const safetyData = extractSafetyData(message);
+                    if (safetyData) {
+                      return (
+                        <div
+                          key={`chart-${message.id}`}
+                          className="w-full max-w-3xl mt-6"
+                        >
+                          <IngredientSafetyChart data={safetyData} />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })
+                  .filter(Boolean)}
+
+                {status === "submitted" && (
+                  <div className="flex justify-start max-w-3xl w-full mt-4">
+                    <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-green-100 shadow-sm">
+                      <Loader2 className="size-4 animate-spin text-green-600" />
+                      <span className="text-sm text-green-700 font-medium">
+                        Waving my magic wand...
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex justify-center max-w-2xl w-full">
+                <Loader2 className="size-4 animate-spin text-green-600" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Magical Input Area */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white/90 via-white/70 to-transparent backdrop-blur-sm border-t border-green-100 overflow-visible pt-8">
+          <div className="w-full px-5 pb-1 items-center flex justify-center relative overflow-visible">
+            <div className="max-w-3xl w-full">
+              <form id="chat-form" onSubmit={form.handleSubmit(onSubmit)}>
+                <FieldGroup>
+                  <Controller
+                    name="message"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor="chat-form-message"
+                          className="sr-only"
+                        >
+                          Message
+                        </FieldLabel>
+                        <div className="relative h-13 group">
+                          <Input
+                            {...field}
+                            id="chat-form-message"
+                            className="h-16 pr-16 pl-6 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-green-200 focus:border-green-400 focus:ring-2 focus:ring-green-100 shadow-lg transition-all duration-300 text-base placeholder-green-400/60"
+                            placeholder="✨ Share your ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
+                            disabled={status === "streaming"}
+                            aria-invalid={fieldState.invalid}
+                            autoComplete="off"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                form.handleSubmit(onSubmit)();
+                              }
+                            }}
+                          />
+                          {(status == "ready" || status == "error") && (
+                            <Button
+                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                              type="submit"
+                              disabled={!field.value.trim()}
+                              size="icon"
+                            >
+                              <ArrowUp className="size-5" />
+                            </Button>
+                          )}
+                          {(status == "streaming" || status == "submitted") && (
+                            <Button
+                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                              size="icon"
+                              onClick={() => {
+                                stop();
+                              }}
+                            >
+                              <Square className="size-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+              </form>
+            </div>
+          </div>
+
+          {/* Magical Footer */}
+          <div className="w-full px-5 py-4 items-center flex justify-center">
+            <div className="max-w-3xl w-full">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-4 text-green-500/70">
+                  <span>
+                    © {new Date().getFullYear()} Ingrid - The Ingredient Fairy
+                  </span>
+                  <Link
+                    href="/terms"
+                    className="hover:text-green-600 transition-colors font-medium"
+                  >
+                    Terms
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2 text-blue-500/70">
+                  <Wand2 className="size-3" />
+                  <span>Magical Food Safety Help</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
