@@ -164,24 +164,24 @@ export default function Chat() {
     toast.success("Magic cleared! ✨");
   }
 
-  // Magical example ingredient lists
-  const exampleIngredients = [
-    {
-      name: "🍎 Fairy Snack",
-      ingredients: "Maltodextrin, Natural Flavors, Sunflower Oil, Salt",
-      color: "from-green-100 to-emerald-100 border-green-200 text-green-700"
-    },
-    {
-      name: "🍬 Rainbow Candy", 
-      ingredients: "E102 (Tartrazine), E110 (Sunset Yellow), E133 (Brilliant Blue), Sugar, Corn Syrup",
-      color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
-    },
-    {
-      name: "🧃 Enchanted Juice",
-      ingredients: "Potassium Sorbate, Sodium Benzoate, Ascorbic Acid, Artificial Sweeteners",
-      color: "from-blue-100 to-cyan-100 border-blue-200 text-blue-700"
-    }
-  ];
+  // Realistic Magical example ingredient lists
+const exampleIngredients = [
+  {
+    name: "🍿 Breakfast Cereal",
+    ingredients: "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
+    color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
+  },
+  {
+    name: "🧃 Fruit Juice Drink", 
+    ingredients: "Water, Sugar, Concentrated Apple Juice (10%), Citric Acid, Ascorbic Acid (Vitamin C), Natural Flavors, Sodium Citrate, Maltodextrin, Acesulfame K, Sucralose, E102 (Tartrazine), E110 (Sunset Yellow)",
+    color: "from-orange-100 to-red-100 border-orange-200 text-orange-700"
+  },
+  {
+    name: "🍜 Instant Noodles",
+    ingredients: "Wheat Flour, Palm Oil, Salt, Sugar, Monosodium Glutamate (E621), Guar Gum, Sodium Carbonate, Potassium Carbonate, Sodium Tripolyphosphate, Turmeric Extract, Soy Lecithin",
+    color: "from-yellow-100 to-amber-100 border-yellow-200 text-yellow-700"
+  }
+];
 
   const handleExampleClick = (ingredients: string) => {
     form.setValue("message", ingredients);
