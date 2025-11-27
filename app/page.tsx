@@ -24,6 +24,7 @@ import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
 import { IngredientSafetyChart } from '@/components/ui/safetychart';
+import { MessageReadAloud } from '@/components/messages/message-read-aloud';
 
 const formSchema = z.object({
   message: z
@@ -105,6 +106,36 @@ export default function Chat() {
     return null;
   };
 
+  // Helper to extract text from a message
+  const getMessageText = (message: UIMessage): string => {
+    return message.parts
+      .filter(part => part.type === 'text')
+      .map(part => 'text' in part ? part.text : '')
+      .join(' ');
+  };
+
+  // Initialize speech synthesis
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const loadVoices = () => {
+        // Voices are now loaded
+        console.log('Fairy voices ready!');
+      };
+      
+      window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+      
+      // Try to load voices immediately
+      if (window.speechSynthesis.getVoices().length > 0) {
+        loadVoices();
+      }
+      
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+        window.speechSynthesis.cancel(); // Clean up on unmount
+      };
+    }
+  }, []);
+
   useEffect(() => {
     setIsClient(true);
     setDurations(stored.durations);
@@ -156,6 +187,11 @@ export default function Chat() {
   }
 
   function clearChat() {
+    // Stop any ongoing speech
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    
     const newMessages: UIMessage[] = [];
     const newDurations = {};
     setMessages(newMessages);
@@ -165,23 +201,23 @@ export default function Chat() {
   }
 
   // Realistic Magical example ingredient lists
-const exampleIngredients = [
-  {
-    name: "🥣 Breakfast Cereal",
-    ingredients: "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
-    color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
-  },
-  {
-    name: "🧃 Fruit Juice Drink", 
-    ingredients: "Water, Sugar, Concentrated Apple Juice (10%), Citric Acid, Ascorbic Acid (Vitamin C), Natural Flavors, Sodium Citrate, Maltodextrin, Acesulfame K, Sucralose, E102 (Tartrazine), E110 (Sunset Yellow)",
-    color: "from-orange-100 to-red-100 border-orange-200 text-orange-700"
-  },
-  {
-    name: "🍜 Instant Noodles",
-    ingredients: "Wheat Flour, Palm Oil, Salt, Sugar, Monosodium Glutamate (E621), Guar Gum, Sodium Carbonate, Potassium Carbonate, Sodium Tripolyphosphate, Turmeric Extract, Soy Lecithin",
-    color: "from-yellow-100 to-amber-100 border-yellow-200 text-yellow-700"
-  }
-];
+  const exampleIngredients = [
+    {
+      name: "🥣 Breakfast Cereal",
+      ingredients: "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
+      color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
+    },
+    {
+      name: "🧃 Fruit Juice Drink", 
+      ingredients: "Water, Sugar, Concentrated Apple Juice (10%), Citric Acid, Ascorbic Acid (Vitamin C), Natural Flavors, Sodium Citrate, Maltodextrin, Acesulfame K, Sucralose, E102 (Tartrazine), E110 (Sunset Yellow)",
+      color: "from-orange-100 to-red-100 border-orange-200 text-orange-700"
+    },
+    {
+      name: "🍜 Instant Noodles",
+      ingredients: "Wheat Flour, Palm Oil, Salt, Sugar, Monosodium Glutamate (E621), Guar Gum, Sodium Carbonate, Potassium Carbonate, Sodium Tripolyphosphate, Turmeric Extract, Soy Lecithin",
+      color: "from-yellow-100 to-amber-100 border-yellow-200 text-yellow-700"
+    }
+  ];
 
   const handleExampleClick = (ingredients: string) => {
     form.setValue("message", ingredients);
@@ -269,7 +305,7 @@ const exampleIngredients = [
               </div>
             )}
             
-            {/* Messages Area with Safety Charts */}
+            {/* Messages Area with Safety Charts & Read Aloud */}
             {isClient ? (
               <>
                 <MessageWall 
@@ -278,6 +314,25 @@ const exampleIngredients = [
                   durations={durations} 
                   onDurationChange={handleDurationChange} 
                 />
+                
+                {/* Add Read Aloud buttons for assistant messages */}
+                {messages
+                  .filter(message => message.role === 'assistant')
+                  .map(message => {
+                    const messageText = getMessageText(message);
+                    // Don't show for empty messages or welcome message
+                    if (!messageText || messageText === WELCOME_MESSAGE) return null;
+                    
+                    return (
+                      <div key={`read-aloud-${message.id}`} className="w-full max-w-3xl flex justify-start mt-2">
+                        <MessageReadAloud 
+                          text={messageText} 
+                          messageId={message.id} 
+                        />
+                      </div>
+                    );
+                  })
+                  .filter(Boolean)}
                 
                 {/* Render safety charts for messages that have JSON data */}
                 {messages.map((message) => {
