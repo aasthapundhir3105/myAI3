@@ -488,7 +488,7 @@ export default function Chat() {
               </form>
             </div>
           </div>
-
+          
           {/* Magical Footer */}
           <div className="w-full px-5 py-4 items-center flex justify-center">
             <div className="max-w-3xl w-full">
