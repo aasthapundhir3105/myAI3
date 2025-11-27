@@ -31,7 +31,7 @@ import { IngredientSafetyChart } from "@/components/ui/safetychart";
 import { MessageReadAloud } from "@/components/messages/message-read-aloud";
 
 const formSchema = z.object({
-  // ✅ Allow empty string (we'll validate against image in onSubmit)
+  // ✅ Allow empty string (we validate against image in onSubmit)
   message: z.string().max(2000, "Message must be at most 2000 characters."),
 });
 
@@ -86,9 +86,10 @@ export default function Chat() {
   const [durations, setDurations] = useState<Record<string, number>>({});
   const welcomeMessageShownRef = useRef<boolean>(false);
 
-  // 🌟 Image attachment state
-  const [attachedImage, setAttachedImage] = useState<File | null>(null);
+  // 🌟 Image attachment state (store as FileList to match useChat types)
+  const [attachedFiles, setAttachedFiles] = useState<FileList | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const stored =
@@ -105,18 +106,15 @@ export default function Chat() {
   const extractSafetyData = (message: UIMessage) => {
     if (message.role !== "assistant") return null;
 
-    // Look for JSON in text parts
     const textParts = message.parts
       .filter((part) => part.type === "text")
       .map((part) => ("text" in part ? part.text : ""))
       .join("");
 
-    // Try to find JSON pattern
     const jsonMatch = textParts.match(/```json\n([\s\S]*?)\n```/);
     if (jsonMatch) {
       try {
         const jsonData = JSON.parse(jsonMatch[1]);
-        // Validate the expected structure
         if (
           jsonData.overall_score !== undefined &&
           jsonData.ingredient_scores
@@ -220,8 +218,10 @@ export default function Chat() {
   };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
 
     if (!file.type.startsWith("image/")) {
       toast.error("Please upload an image file (photo of the label).");
@@ -240,16 +240,18 @@ export default function Chat() {
     }
 
     const url = URL.createObjectURL(file);
-    setAttachedImage(file);
+    setAttachedFiles(files);        // <-- store FileList
     setImagePreviewUrl(url);
+    setImageName(file.name);
   };
 
   const clearAttachedImage = () => {
     if (imagePreviewUrl) {
       URL.revokeObjectURL(imagePreviewUrl);
     }
-    setAttachedImage(null);
+    setAttachedFiles(null);
     setImagePreviewUrl(null);
+    setImageName(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -259,28 +261,24 @@ export default function Chat() {
     const trimmed = data.message.trim();
 
     // If no text and no image → block
-    if (!trimmed && !attachedImage) {
+    if (!trimmed && !attachedFiles) {
       toast.error("Please enter a message or upload a label photo.");
       return;
     }
 
     let finalText = trimmed;
 
-    // If ONLY an image is attached, create a sensible default message
-    if (!trimmed && attachedImage) {
+    if (!trimmed && attachedFiles) {
       finalText =
         "I've uploaded a photo of a product label / ingredient list. Please help me understand the ingredient safety based on that image.";
-    } else if (trimmed && attachedImage) {
-      // If both text + image, add a gentle note
+    } else if (trimmed && attachedFiles) {
       finalText = `${trimmed}\n\n(Also, I've uploaded a photo of the product label / ingredient list for context.)`;
     }
 
-    const filesToSend = attachedImage ? [attachedImage] : undefined;
-
-    // 🔗 IMPORTANT: send the image to the backend as `files`
+    // ✅ Pass FileList directly; matches `files` type
     sendMessage({
       text: finalText,
-      files: filesToSend,
+      files: attachedFiles ?? undefined,
     });
 
     form.reset();
@@ -575,7 +573,7 @@ export default function Chat() {
                               className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                               type="submit"
                               disabled={
-                                !field.value.trim() && !attachedImage
+                                !field.value.trim() && !attachedFiles
                               }
                               size="icon"
                             >
@@ -598,7 +596,7 @@ export default function Chat() {
                         </div>
 
                         {/* Attached image preview pill */}
-                        {imagePreviewUrl && attachedImage && (
+                        {imagePreviewUrl && imageName && (
                           <div className="mt-2 flex items-center justify-between rounded-xl border border-green-100 bg-green-50/70 px-3 py-2 text-xs shadow-sm">
                             <div className="flex items-center gap-2">
                               <div className="h-8 w-8 rounded-lg overflow-hidden border border-green-200 bg-white">
@@ -614,7 +612,7 @@ export default function Chat() {
                                   Label photo attached
                                 </span>
                                 <span className="text-[10px] text-green-700/70 truncate max-w-[180px]">
-                                  {attachedImage.name}
+                                  {imageName}
                                 </span>
                               </div>
                             </div>
