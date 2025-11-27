@@ -82,7 +82,7 @@ export default function Chat() {
   // Helper function to extract JSON from AI response
   const extractSafetyData = (message: UIMessage) => {
     if (message.role !== 'assistant') return null;
-
+    
     // Look for JSON in text parts
     const textParts = message.parts
       .filter(part => part.type === 'text')
@@ -102,7 +102,7 @@ export default function Chat() {
         console.error('Failed to parse JSON from AI response:', error);
       }
     }
-
+    
     return null;
   };
 
@@ -262,7 +262,7 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
-
+        
         {/* Main Chat Area with Magical Background */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
           <div className="flex flex-col items-center justify-end min-h-full">
@@ -295,7 +295,7 @@ export default function Chat() {
                     </button>
                   ))}
                 </div>
-
+                
                 {/* Magical Divider */}
                 <div className="flex items-center my-8">
                   <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
@@ -304,7 +304,7 @@ export default function Chat() {
                 </div>
               </div>
             )}
-
+            
             {/* Messages Area with Safety Charts & Read Aloud */}
             {isClient ? (
               <>
@@ -314,7 +314,7 @@ export default function Chat() {
                   durations={durations} 
                   onDurationChange={handleDurationChange} 
                 />
-
+                
                 {/* Add Read Aloud buttons for assistant messages */}
                 {messages
                   .filter(message => message.role === 'assistant')
@@ -346,7 +346,7 @@ export default function Chat() {
                   }
                   return null;
                 }).filter(Boolean)}
-
+                
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
                     <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-green-100 shadow-sm">
@@ -423,7 +423,7 @@ export default function Chat() {
               </form>
             </div>
           </div>
-
+          
           {/* Magical Footer */}
           <div className="w-full px-5 py-4 items-center flex justify-center">
             <div className="max-w-3xl w-full">
