@@ -9,7 +9,7 @@ interface FairyAnalysisProps {
     ingredient_scores?: Array<{
       ingredient: string;
       score: number;
-      status: string;
+      status: 'safe' | 'caution' | 'warning' | 'danger';
     }>;
   };
 }
@@ -56,8 +56,8 @@ export function FairyAnalysis({ messageText, safetyData }: FairyAnalysisProps) {
         </div>
       </div>
 
-      {/* Safety Chart */}
-      {safetyData && (
+      {/* Safety Chart - Only show if we have ingredient scores */}
+      {safetyData && safetyData.ingredient_scores && safetyData.ingredient_scores.length > 0 && (
         <div className="mt-6">
           <IngredientSafetyChart data={safetyData} />
         </div>
