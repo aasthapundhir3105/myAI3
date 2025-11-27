@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Loader2, Plus, Square, Sparkles, Shield, TestTube } from "lucide-react";
+import { ArrowUp, Loader2, Plus, Square, Sparkles, Shield, Wand2 } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
@@ -161,23 +161,23 @@ export default function Chat() {
     setMessages(newMessages);
     setDurations(newDurations);
     saveMessagesToStorage(newMessages, newDurations);
-    toast.success("Chat cleared");
+    toast.success("Magic cleared! ✨");
   }
 
-  // Example ingredient lists for quick testing
+  // Magical example ingredient lists
   const exampleIngredients = [
     {
-      name: "🍎 Safe Snack",
+      name: "🍎 Fairy Snack",
       ingredients: "Maltodextrin, Natural Flavors, Sunflower Oil, Salt",
       color: "from-green-100 to-emerald-100 border-green-200 text-green-700"
     },
     {
-      name: "🍬 Colorful Candy", 
+      name: "🍬 Rainbow Candy", 
       ingredients: "E102 (Tartrazine), E110 (Sunset Yellow), E133 (Brilliant Blue), Sugar, Corn Syrup",
       color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
     },
     {
-      name: "🧃 Preserved Juice",
+      name: "🧃 Enchanted Juice",
       ingredients: "Potassium Sorbate, Sodium Benzoate, Ascorbic Acid, Artificial Sweeteners",
       color: "from-blue-100 to-cyan-100 border-blue-200 text-blue-700"
     }
@@ -188,27 +188,27 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-blue-50 via-rose-50 to-cyan-50">
+    <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
       <main className="w-full bg-transparent h-screen relative">
-        {/* Beautiful Header with Gradient */}
-        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white/80 via-white/60 to-transparent backdrop-blur-sm border-b border-blue-100 overflow-visible pb-16">
+        {/* Magical Header with Fairy Gradient */}
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white/90 via-white/70 to-transparent backdrop-blur-sm border-b border-green-100 overflow-visible pb-16">
           <div className="relative overflow-visible">
             <ChatHeader>
               <ChatHeaderBlock />
               <ChatHeaderBlock className="justify-center items-center">
-                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-gradient-to-br from-cyan-400 to-blue-500">
+                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-gradient-to-br from-green-400 to-blue-400">
                   <AvatarImage src="/logo.png" />
-                  <AvatarFallback className="bg-gradient-to-br from-cyan-400 to-blue-500 text-white">
-                    <Shield className="size-5" />
+                  <AvatarFallback className="bg-gradient-to-br from-green-400 to-blue-400 text-white">
+                    <Wand2 className="size-5" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-3 ml-3">
-                  <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-blue-100">
-                    <TestTube className="size-5 text-cyan-600" />
-                    <p className="tracking-tight text-lg font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+                  <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-green-100">
+                    <Wand2 className="size-5 text-green-600" />
+                    <p className="tracking-tight text-lg font-semibold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                       {AI_NAME}
                     </p>
-                    <Sparkles className="size-4 text-amber-400" />
+                    <Sparkles className="size-4 text-yellow-400" />
                   </div>
                 </div>
               </ChatHeaderBlock>
@@ -216,7 +216,7 @@ export default function Chat() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="cursor-pointer border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 shadow-sm font-medium"
+                  className="cursor-pointer border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 shadow-sm font-medium"
                   onClick={clearChat}
                 >
                   <Plus className="size-4" />
@@ -227,18 +227,18 @@ export default function Chat() {
           </div>
         </div>
         
-        {/* Main Chat Area with Beautiful Background */}
+        {/* Main Chat Area with Magical Background */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
           <div className="flex flex-col items-center justify-end min-h-full">
-            {/* Beautiful Example Cards */}
+            {/* Magical Example Cards */}
             {isClient && messages.length <= 1 && (
               <div className="w-full max-w-4xl mb-8 animate-in fade-in duration-700">
                 <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                    Analyze Food Ingredients
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                    Wave My Wand Over Your Ingredients! 🧚♂️
                   </h2>
-                  <p className="text-blue-600/70 text-sm font-medium">
-                    Click an example below or paste your own ingredient list
+                  <p className="text-green-600/70 text-sm font-medium">
+                    Try a magical example or share your own ingredient list
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -257,11 +257,11 @@ export default function Chat() {
                   ))}
                 </div>
                 
-                {/* Divider */}
+                {/* Magical Divider */}
                 <div className="flex items-center my-8">
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
-                  <span className="px-4 text-blue-400 text-sm font-medium">or type your own</span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
+                  <span className="px-4 text-green-400 text-sm font-medium">or share your own magic</span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
                 </div>
               </div>
             )}
@@ -291,23 +291,23 @@ export default function Chat() {
                 
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
-                    <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-blue-100 shadow-sm">
-                      <Loader2 className="size-4 animate-spin text-cyan-600" />
-                      <span className="text-sm text-cyan-700 font-medium">Analyzing ingredients...</span>
+                    <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-green-100 shadow-sm">
+                      <Loader2 className="size-4 animate-spin text-green-600" />
+                      <span className="text-sm text-green-700 font-medium">Waving my magic wand...</span>
                     </div>
                   </div>
                 )}
               </>
             ) : (
               <div className="flex justify-center max-w-2xl w-full">
-                <Loader2 className="size-4 animate-spin text-cyan-600" />
+                <Loader2 className="size-4 animate-spin text-green-600" />
               </div>
             )}
           </div>
         </div>
 
-        {/* Beautiful Input Area */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white/90 via-white/70 to-transparent backdrop-blur-sm border-t border-blue-100 overflow-visible pt-8">
+        {/* Magical Input Area */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white/90 via-white/70 to-transparent backdrop-blur-sm border-t border-green-100 overflow-visible pt-8">
           <div className="w-full px-5 pb-1 items-center flex justify-center relative overflow-visible">
             <div className="max-w-3xl w-full">
               <form id="chat-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -324,8 +324,8 @@ export default function Chat() {
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-16 pr-16 pl-6 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-cyan-200 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 shadow-lg transition-all duration-300 text-base placeholder-blue-400/60"
-                            placeholder="✨ Paste ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
+                            className="h-16 pr-16 pl-6 bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-green-200 focus:border-green-400 focus:ring-2 focus:ring-green-100 shadow-lg transition-all duration-300 text-base placeholder-green-400/60"
+                            placeholder="✨ Share your ingredient list here... (e.g., E102, Maltodextrin, Sodium Benzoate)"
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
                             autoComplete="off"
@@ -338,7 +338,7 @@ export default function Chat() {
                           />
                           {(status == "ready" || status == "error") && (
                             <Button
-                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                               type="submit"
                               disabled={!field.value.trim()}
                               size="icon"
@@ -348,7 +348,7 @@ export default function Chat() {
                           )}
                           {(status == "streaming" || status == "submitted") && (
                             <Button
-                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                              className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                               size="icon"
                               onClick={() => {
                                 stop();
@@ -366,17 +366,17 @@ export default function Chat() {
             </div>
           </div>
           
-          {/* Beautiful Footer */}
+          {/* Magical Footer */}
           <div className="w-full px-5 py-4 items-center flex justify-center">
             <div className="max-w-3xl w-full">
               <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-4 text-blue-500/70">
-                  <span>© {new Date().getFullYear()} FSSAI Food Safety Analyzer</span>
-                  <Link href="/terms" className="hover:text-blue-600 transition-colors font-medium">Terms</Link>
+                <div className="flex items-center gap-4 text-green-500/70">
+                  <span>© {new Date().getFullYear()} Ingrid - The Ingredient Fairy</span>
+                  <Link href="/terms" className="hover:text-green-600 transition-colors font-medium">Terms</Link>
                 </div>
-                <div className="flex items-center gap-2 text-cyan-500/70">
-                  <Shield className="size-3" />
-                  <span>Your Safety is Our Priority</span>
+                <div className="flex items-center gap-2 text-blue-500/70">
+                  <Wand2 className="size-3" />
+                  <span>Magical Food Safety Help</span>
                 </div>
               </div>
             </div>
