@@ -25,7 +25,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { IngredientSafetyChart } from '@/components/ui/safetychart';
 import { MessageReadAloud } from '@/components/messages/message-read-aloud';
-import { FairyAnalysis } from '@/components/messages/fairy-analysis';
 
 const formSchema = z.object({
   message: z
@@ -80,40 +79,30 @@ export default function Chat() {
     messages: initialMessages,
   });
 
-  // Improved JSON extraction that handles different formats
+  // Helper function to extract JSON from AI response
   const extractSafetyData = (message: UIMessage) => {
     if (message.role !== 'assistant') return null;
-    
+
+    // Look for JSON in text parts
     const textParts = message.parts
       .filter(part => part.type === 'text')
       .map(part => 'text' in part ? part.text : '')
       .join('');
 
-    // Try multiple JSON pattern matches
-    const jsonMatch = textParts.match(/```json\n([\s\S]*?)\n```/) || 
-                     textParts.match(/\{[\s\S]*?"overall_score"[\s\S]*?\}/);
-    
+    // Try to find JSON pattern
+    const jsonMatch = textParts.match(/```json\n([\s\S]*?)\n```/);
     if (jsonMatch) {
       try {
-        const jsonString = jsonMatch[0].replace(/```json|```/g, '').trim();
-        const jsonData = JSON.parse(jsonString);
-        
-        // Validate and transform the data
+        const jsonData = JSON.parse(jsonMatch[1]);
+        // Validate the expected structure
         if (jsonData.overall_score !== undefined && jsonData.ingredient_scores) {
-          return {
-            overall_score: jsonData.overall_score,
-            ingredient_scores: jsonData.ingredient_scores.map((item: any) => ({
-              ingredient: item.ingredient || item.name || 'Unknown',
-              score: item.score || 50,
-              status: item.status || 'unknown'
-            }))
-          };
+          return jsonData;
         }
       } catch (error) {
         console.error('Failed to parse JSON from AI response:', error);
       }
     }
-    
+
     return null;
   };
 
@@ -273,7 +262,7 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
-        
+
         {/* Main Chat Area with Magical Background */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
           <div className="flex flex-col items-center justify-end min-h-full">
@@ -306,7 +295,7 @@ export default function Chat() {
                     </button>
                   ))}
                 </div>
-                
+
                 {/* Magical Divider */}
                 <div className="flex items-center my-8">
                   <div className="flex-1 h-px bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
@@ -315,8 +304,8 @@ export default function Chat() {
                 </div>
               </div>
             )}
-            
-            {/* Messages Area with Beautiful Analysis */}
+
+            {/* Messages Area with Safety Charts & Read Aloud */}
             {isClient ? (
               <>
                 <MessageWall 
@@ -325,36 +314,39 @@ export default function Chat() {
                   durations={durations} 
                   onDurationChange={handleDurationChange} 
                 />
-                
-                {/* Beautiful Analysis for Assistant Messages */}
+
+                {/* Add Read Aloud buttons for assistant messages */}
                 {messages
                   .filter(message => message.role === 'assistant')
                   .map(message => {
                     const messageText = getMessageText(message);
-                    const safetyData = extractSafetyData(message);
-                    
                     // Don't show for empty messages or welcome message
                     if (!messageText || messageText === WELCOME_MESSAGE) return null;
                     
                     return (
-                      <div key={`analysis-${message.id}`} className="w-full max-w-3xl mt-4">
-                        <FairyAnalysis 
-                          messageText={messageText}
-                          safetyData={safetyData}
+                      <div key={`read-aloud-${message.id}`} className="w-full max-w-3xl flex justify-start mt-2">
+                        <MessageReadAloud 
+                          text={messageText} 
+                          messageId={message.id} 
                         />
-                        
-                        {/* Read Aloud Button */}
-                        <div className="flex justify-start mt-3">
-                          <MessageReadAloud 
-                            text={messageText} 
-                            messageId={message.id} 
-                          />
-                        </div>
                       </div>
                     );
                   })
                   .filter(Boolean)}
                 
+                {/* Render safety charts for messages that have JSON data */}
+                {messages.map((message) => {
+                  const safetyData = extractSafetyData(message);
+                  if (safetyData) {
+                    return (
+                      <div key={`chart-${message.id}`} className="w-full max-w-3xl mt-6">
+                        <IngredientSafetyChart data={safetyData} />
+                      </div>
+                    );
+                  }
+                  return null;
+                }).filter(Boolean)}
+
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
                     <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-green-100 shadow-sm">
@@ -431,7 +423,7 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          
+
           {/* Magical Footer */}
           <div className="w-full px-5 py-4 items-center flex justify-center">
             <div className="max-w-3xl w-full">
