@@ -277,7 +277,7 @@ export default function Chat() {
               <ChatHeaderBlock />
               <ChatHeaderBlock className="justify-center items-center">
                 <Avatar className="size-10 ring-2 ring-white shadow-lg bg-gradient-to-br from-green-400 to-blue-400">
-                  <AvatarImage src="/logo.png" />
+                  <AvatarImage src="/ingrid" />
                   <AvatarFallback className="bg-gradient-to-br from-green-400 to-blue-400 text-white">
                     <Wand2 className="size-5" />
                   </AvatarFallback>
