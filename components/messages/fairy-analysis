@@ -1,0 +1,67 @@
+"use client";
+
+import { IngredientSafetyChart } from '@/components/ui/safetychart';
+
+interface FairyAnalysisProps {
+  messageText: string;
+  safetyData?: {
+    overall_score: number;
+    ingredient_scores: Array<{
+      ingredient: string;
+      score: number;
+      status: string;
+    }>;
+  };
+}
+
+export function FairyAnalysis({ messageText, safetyData }: FairyAnalysisProps) {
+  // Clean the text - remove JSON and format nicely
+  const cleanText = messageText.replace(/```json[\s\S]*?```/g, '').trim();
+  
+  const getSafetyEmoji = (score: number) => {
+    if (score >= 80) return '🟢';
+    if (score >= 60) return '🟡';
+    if (score >= 40) return '🟠';
+    return '🔴';
+  };
+
+  const getOverallVerdict = (score: number) => {
+    if (score >= 80) return 'Fairy Approved! ✨';
+    if (score >= 60) return 'Mostly Magical 🧚♂️';
+    if (score >= 40) return 'Needs Caution ⚠️';
+    return 'Concerns Found 🚨';
+  };
+
+  return (
+    <div className="fairy-analysis bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-green-100 p-6 shadow-lg max-w-3xl w-full">
+      {/* Overall Safety Header */}
+      {safetyData && (
+        <div className="text-center mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200">
+          <div className="text-4xl mb-2">{getSafetyEmoji(safetyData.overall_score)}</div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-1">
+            {safetyData.overall_score}/100
+          </h3>
+          <p className="text-lg text-gray-600">{getOverallVerdict(safetyData.overall_score)}</p>
+        </div>
+      )}
+
+      {/* Ingrid's Analysis Text */}
+      <div className="prose prose-green max-w-none mb-6">
+        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+          {cleanText.split('\n').map((line, index) => (
+            <p key={index} className="mb-3">
+              {line}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      {/* Safety Chart */}
+      {safetyData && (
+        <div className="mt-6">
+          <IngredientSafetyChart data={safetyData} />
+        </div>
+      )}
+    </div>
+  );
+}
