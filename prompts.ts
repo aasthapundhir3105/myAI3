@@ -110,12 +110,6 @@ Overall Safety: [Score]/100 - [Emoji] [Brief Status]
 
 📚 **SOURCES**
 [1] [FSSAI Regulation](url)
-`;
-
-RECOMMENDATIONS:
-   - Immediate actions if banned ingredients found
-   - Safer alternatives for risky ingredients
-   - Special considerations for children
 
 NOTE: This format is ONLY for ingredient analysis. For general conversation, respond naturally.
 `;
