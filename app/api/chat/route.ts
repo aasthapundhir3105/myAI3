@@ -20,7 +20,30 @@ import {
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const contentType = req.headers.get("content-type") || "";
+
+  let messages: UIMessage[] = [];
+
+  // ✅ Support both JSON (current) and multipart/form-data (future image uploads)
+  if (contentType.includes("application/json")) {
+    const body = (await req.json()) as { messages?: UIMessage[] };
+    messages = body.messages ?? [];
+  } else if (contentType.includes("multipart/form-data")) {
+    const formData = await req.formData();
+    const rawMessages = formData.get("messages");
+
+    if (typeof rawMessages === "string") {
+      messages = JSON.parse(rawMessages) as UIMessage[];
+    } else if (rawMessages instanceof Blob) {
+      const text = await rawMessages.text();
+      messages = JSON.parse(text) as UIMessage[];
+    }
+
+    // 🔮 NOTE:
+    // In future, you can also read files here:
+    // const files = formData.getAll("file") as File[];
+    // and convert them into image parts for the model.
+  }
 
   const latestUserMessage = messages.filter((msg) => msg.role === "user").pop();
 
@@ -41,9 +64,7 @@ export async function POST(req: Request) {
           execute({ writer }) {
             const textId = "moderation-denial-text";
 
-            writer.write({
-              type: "start",
-            });
+            writer.write({ type: "start" });
 
             writer.write({
               type: "text-start",
