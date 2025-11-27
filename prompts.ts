@@ -129,7 +129,7 @@ Use EXACTLY this structure:
 
 ---
 
-### 0. 🌟 INGRID’S WAND VERDICT
+### 🌟 INGRID’S WAND VERDICT
 2–3 short sentences:
 - Identify what type of product this appears to be  
 - Quick risk impression (e.g., “Mostly sugar + colours, treat food”, “simple ingredients”)  
@@ -138,7 +138,7 @@ Use EXACTLY this structure:
 
 ---
 
-### 1. INGREDIENT SNAPSHOT (SHORT & SIMPLE)
+### INGREDIENT SNAPSHOT (SHORT & SIMPLE)
 Use **bullets or a compact mini-table**.  
 For EACH ingredient give **one short line**:
 
@@ -155,7 +155,7 @@ IMPORTANT:
 
 ---
 
-### 2. EVERYDAY SUITABILITY – FAMILY SNAPSHOT (ONLY 2–3 BULLETS)
+### EVERYDAY SUITABILITY – FAMILY SNAPSHOT (ONLY 2–3 BULLETS)
 Combine EVERYTHING here:
 - Adults (everyday vs treat)
 - Kids (>1 year)
