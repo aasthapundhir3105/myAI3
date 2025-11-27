@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
 
 interface IngredientScore {
   ingredient: string;
@@ -48,28 +47,6 @@ export function IngredientSafetyChart({ data }: SafetyChartProps) {
     fill: getColorByScore(item.score),
   }));
 
-  const chartConfig = {
-    score: {
-      label: 'Safety Score',
-    },
-    safe: {
-      label: 'Safe',
-      color: '#10b981',
-    },
-    caution: {
-      label: 'Caution', 
-      color: '#f59e0b',
-    },
-    warning: {
-      label: 'Warning',
-      color: '#f97316',
-    },
-    danger: {
-      label: 'Danger',
-      color: '#ef4444',
-    },
-  };
-
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -101,44 +78,43 @@ export function IngredientSafetyChart({ data }: SafetyChartProps) {
         </div>
       </div>
 
-      <ChartContainer config={chartConfig}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart 
-            data={chartData} 
-            layout="vertical" 
-            margin={{ top: 5, right: 30, left: 150, bottom: 5 }}
-          >
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              horizontal={true} 
-              vertical={false} 
-            />
-            <XAxis 
-              type="number" 
-              domain={[0, 100]}
-              tick={{ fill: '#6b7280' }}
-              tickLine={{ stroke: '#6b7280' }}
-            />
-            <YAxis 
-              type="category" 
-              dataKey="name"
-              tick={{ fill: '#6b7280' }}
-              tickLine={{ stroke: '#6b7280' }}
-              width={90}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar 
-              dataKey="score" 
-              radius={[0, 4, 4, 0]}
-              barSize={18}
-             >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.fill} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartContainer>
+      {/* Removed ChartContainer wrapper */}
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart 
+          data={chartData} 
+          layout="vertical" 
+          margin={{ top: 5, right: 30, left: 150, bottom: 5 }}
+        >
+          <CartesianGrid 
+            strokeDasharray="3 3" 
+            horizontal={true} 
+            vertical={false} 
+          />
+          <XAxis 
+            type="number" 
+            domain={[0, 100]}
+            tick={{ fill: '#6b7280' }}
+            tickLine={{ stroke: '#6b7280' }}
+          />
+          <YAxis 
+            type="category" 
+            dataKey="name"
+            tick={{ fill: '#6b7280' }}
+            tickLine={{ stroke: '#6b7280' }}
+            width={90}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Bar 
+            dataKey="score" 
+            radius={[0, 4, 4, 0]}
+            barSize={18}
+           >
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.fill} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
 
       {/* Legend */}
       <div className="flex justify-center gap-4 mt-4 text-xs">
