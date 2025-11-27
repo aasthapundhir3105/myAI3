@@ -308,6 +308,20 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
+        
+        {/* Safety disclaimer banner */}
+        <div className="fixed top-[72px] left-0 right-0 z-40 flex justify-center px-4">
+          <div className="max-w-3xl w-full">
+            <div className="mt-1 text-[11px] md:text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-4 py-1 shadow-sm flex items-center gap-2">
+              <span className="text-sm">⚠️</span>
+              <p className="leading-snug">
+                Ingrid shares general ingredient information and is <span className="font-semibold">not</span> a substitute
+                for medical or dietary advice. For allergies, pregnancy, children or medical conditions, please consult a
+                doctor or qualified professional.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Main Chat Area with Magical Background */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[180px]">
