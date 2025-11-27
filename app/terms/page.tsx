@@ -3,205 +3,293 @@ import Link from "next/link";
 import { OWNER_NAME } from "@/config";
 
 export default function Terms() {
-    return (
-        <div className="w-full flex justify-center p-10">
-            <div className="w-full max-w-screen-md space-y-6">
-                <Link
-                    href="/"
-                    className="flex items-center gap-2 text-gray-500 hover:text-gray-700 underline"
-                >
-                    <ArrowLeftIcon className="w-4 h-4" />
-                    Back to Chatbot
-                </Link>
-                <h1 className="text-3xl font-bold">MyAI3</h1>
-                <h2 className="text-2xl font-semibold">Terms of Use / Disclaimer</h2>
+  return (
+    <div className="w-full flex justify-center p-10">
+      <div className="w-full max-w-screen-md space-y-6">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-gray-500 hover:text-gray-700 underline"
+        >
+          <ArrowLeftIcon className="w-4 h-4" />
+          Back to Ingrid
+        </Link>
 
-                <p className="text-gray-700">
-                    The following terms of use govern access to and use of the MyAI3
-                    Assistant ("AI Chatbot"), an artificial intelligence tool provided by
-                    {OWNER_NAME} ("I", "me", or "myself"). By engaging with the AI
-                    Chatbot, you agree to these terms. If you do not agree, you may not
-                    use the AI Chatbot.
-                </p>
+        <h1 className="text-3xl font-bold">Ingrid – The Ingredient Fairy</h1>
+        <h2 className="text-2xl font-semibold">Safety &amp; Terms of Use</h2>
 
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">General Information</h3>
-                    <ol className="list-decimal list-inside space-y-3">
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Provider and Purpose:</span> The
-                            AI Chatbot is a tool developed and maintained by {OWNER_NAME}. It
-                            is intended solely to assist users with questions and coursework
-                            related to courses taught by {OWNER_NAME}. The AI Chatbot is not
-                            affiliated with, endorsed by, or operated by the course provider.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Third-Party Involvement:</span>{" "}
-                            The AI Chatbot utilizes multiple third-party platforms and
-                            vendors, some of which operate outside the United States. Your
-                            inputs may be transmitted, processed, and stored by these
-                            third-party systems. As such, confidentiality, security, and privacy
-                            cannot be guaranteed, and data transmission may be inherently
-                            insecure and subject to interception.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">No Guarantee of Accuracy:</span>{" "}
-                            The AI Chatbot is designed to provide helpful and relevant
-                            responses but may deliver inaccurate, incomplete, or outdated
-                            information. Users are strongly encouraged to independently verify
-                            any information before relying on it for decisions or actions.
-                        </li>
-                    </ol>
-                </div>
+        <p className="text-gray-700">
+          These Safety &amp; Terms govern your use of{" "}
+          <span className="font-semibold">Ingrid – The Ingredient Fairy</span>{" "}
+          (the “Assistant”, “Ingrid”), an AI-based tool operated by{" "}
+          <span className="font-semibold">{OWNER_NAME}</span> (“we”, “us” or
+          “our”). By using Ingrid, you confirm that you have read, understood,
+          and agree to these terms. If you do not agree, please do not use the
+          Assistant.
+        </p>
 
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Liability</h3>
-                    <ol className="list-decimal list-inside space-y-3">
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Use at Your Own Risk:</span> The
-                            AI Chatbot is provided on an "as-is" and "as-available" basis. To
-                            the fullest extent permitted by law:
-                            <ul className="list-disc list-inside ml-6 mt-2 space-y-2">
-                                <li>
-                                    {OWNER_NAME} disclaims all warranties, express or implied,
-                                    including but not limited to warranties of merchantability,
-                                    fitness for a particular purpose, and non-infringement.
-                                </li>
-                                <li>
-                                    {OWNER_NAME} is not liable for any errors, inaccuracies, or
-                                    omissions in the information provided by the AI Chatbot.
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">
-                                No Responsibility for Damages:
-                            </span>{" "}
-                            Under no circumstances shall {OWNER_NAME}, his collaborators,
-                            partners, affiliated entities, or representatives be liable for
-                            any direct, indirect, incidental, consequential, special, or
-                            punitive damages arising out of or in connection with the use of
-                            the AI Chatbot.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">
-                                Modification or Discontinuation:
-                            </span>{" "}
-                            I reserve the right to modify, suspend, or discontinue the AI
-                            Chatbot's functionalities at any time without notice.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Future Fees:</span> While the AI
-                            Chatbot is currently provided free of charge, I reserve the right
-                            to implement a fee for its use at any time.
-                        </li>
-                    </ol>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">User Responsibilities</h3>
-                    <ol className="list-decimal list-inside space-y-3">
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Eligibility:</span> Use of the AI
-                            Chatbot is restricted to individuals aged 18 or older.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Prohibited Conduct:</span> By
-                            using the AI Chatbot, you agree not to:
-                            <ul className="list-disc list-inside ml-6 mt-2 space-y-2">
-                                <li>Post or transmit content that is defamatory, offensive, intimidating, illegal, racist, discriminatory, obscene, or otherwise inappropriate.</li>
-                                <li>Use the AI Chatbot to engage in unlawful or unethical activities.</li>
-                                <li>Attempt to compromise the security or functionality of the AI Chatbot</li>
-                                <li>Copy, distribute, modify, reverse engineer, decompile, or extract the source code of the AI Chatbot without explicit written consent.</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Data Privacy and Security</h3>
-                    <ol className="list-decimal list-inside space-y-3">
-                        <li className="text-gray-700">
-                            <span className="font-semibold">No Privacy Guarantee:</span> The
-                            AI Chatbot does not guarantee privacy, confidentiality, or
-                            security of the information you provide. Conversations may be
-                            reviewed by {OWNER_NAME}, collaborators, partners, or affiliated
-                            entities for purposes such as improving the AI Chatbot, developing
-                            course materials, and conducting research.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Public Information:</span> Any
-                            information you provide through the AI Chatbot is treated as
-                            public.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Data Transmission:</span> Inputs
-                            may be transmitted to and processed by third-party services.
-                        </li>
-                    </ol>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Ownership of Content and Commercial Use</h3>
-                    <ol className="list-decimal list-inside space-y-3">
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Surrender of Rights:</span> By
-                            using the AI Chatbot, you irrevocably assign and surrender all rights,
-                            title, interest, and intellectual property rights in any content, inputs
-                            you provide, and outputs generated by the AI Chatbot to {OWNER_NAME}.
-                            This includes, but is not limited to, text, questions, and conversations.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">Commercial and Research Use:</span>{" "}
-                            {OWNER_NAME} reserves the right to use any input provided by users and
-                            any output generated by the AI Chatbot for commercial purposes, research,
-                            or other activities without compensation or notification to users.
-                        </li>
-                        <li className="text-gray-700">
-                            <span className="font-semibold">No Claim to Gains or Profits:</span>{" "}
-                            Users agree that they have no rights, claims, or entitlement to
-                            any gains, profits, or benefits derived from the use or
-                            exploitation of the content provided to the AI Chatbot.
-                        </li>
-                    </ol>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Indemnification</h3>
-                    <p className="text-gray-700">
-                        By using the AI Chatbot, you agree to indemnify and hold harmless
-                        {OWNER_NAME}, his collaborators, partners, affiliated entities, and
-                        representatives from any claims, damages, losses, or liabilities
-                        arising out of your use of the AI Chatbot or violation of these
-                        terms.
-                    </p>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Governing Law and Jurisdiction</h3>
-                    <p className="text-gray-700">
-                        These terms are governed by the laws of the State of North Carolina,
-                        United States. Additional jurisdictions may apply for users outside
-                        the United States, subject to applicable local laws. In case of
-                        conflicts, the laws of North Carolina shall prevail to the extent
-                        permissible. Any disputes arising under or in connection with these
-                        terms shall be subject to the exclusive jurisdiction of the courts
-                        located in North Carolina.
-                    </p>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Acceptance of Terms</h3>
-                    <p className="text-gray-700">
-                        By using the AI Chatbot, you confirm that you have read, understood,
-                        and agreed to these Terms of Use and Disclaimer. If you do not
-                        agree with any part of these terms, you may not use the AI Chatbot.
-                    </p>
-                </div>
-
-                <div className="mt-8 text-sm text-gray-600">
-                    <p>Last Updated: November 17, 2025</p>
-                </div>
-            </div>
+        {/* General Information */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">1. Purpose &amp; Scope</h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">Educational tool only:</span>{" "}
+              Ingrid is designed to help you understand{" "}
+              <span className="font-semibold">
+                ingredients in food, beverages and personal care topicals
+              </span>{" "}
+              in simple language (for example: potential irritation, general
+              safety flags, and commonly known regulatory or research trends).
+              It is intended for{" "}
+              <span className="font-semibold">informational and educational</span>{" "}
+              purposes only.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                No medical or nutrition advice:
+              </span>{" "}
+              Ingrid does <span className="font-semibold">not</span> provide
+              medical, dermatological, nutritional, paediatric, or pregnancy
+              advice. It cannot diagnose, treat, or manage any condition, nor
+              confirm whether a specific product is “safe” for you.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                Not a substitute for professionals:
+              </span>{" "}
+              Always consult a qualified doctor, dermatologist, paediatrician,
+              dietician, allergist, or other health professional before making
+              decisions related to your health, your child’s health, allergies,
+              pregnancy or medical conditions.
+            </li>
+          </ol>
         </div>
-    );
+
+        {/* Health & Safety */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">
+            2. Special Situations: Pregnancy, Children &amp; Allergies
+          </h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">Pregnancy &amp; breastfeeding:</span>{" "}
+              Ingrid may label some ingredients as “caution” for pregnancy, but
+              this is only a generic indication. It cannot replace personalised
+              medical advice. Always consult your doctor before using products
+              while pregnant or breastfeeding.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                Babies, toddlers &amp; children:
+              </span>{" "}
+              Products used on or consumed by children require extra caution.
+              Ingrid’s responses are{" "}
+              <span className="font-semibold">
+                not tailored to a child’s age, weight, or medical history
+              </span>
+              . Always follow your paediatrician’s guidance.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                Allergies &amp; sensitivities:
+              </span>{" "}
+              Ingrid cannot reliably detect or rule out allergy risks (including
+              anaphylaxis). If you have known or suspected allergies, follow
+              your doctor’s plan, read product labels carefully, and never rely
+              solely on Ingrid for safety decisions.
+            </li>
+          </ol>
+        </div>
+
+        {/* Accuracy, Limitations & Third Parties */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">
+            3. Accuracy, Limitations &amp; Third-Party Services
+          </h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">No guarantee of accuracy:</span>{" "}
+              Ingrid uses AI models and reference knowledge which may be{" "}
+              inaccurate, incomplete, outdated, or not specific to your
+              geography or product brand. You should{" "}
+              <span className="font-semibold">
+                independently verify all important information
+              </span>{" "}
+              (for example through product labels, official regulations, and
+              professional advice).
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">Changing evidence &amp; laws:</span>{" "}
+              Scientific research and regulations evolve. Information about
+              ingredients, “banned/restricted” status, and safety classifications
+              may change over time. Ingrid may not always reflect the latest
+              updates.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">Third-party providers:</span> The
+              Assistant may rely on infrastructure and services operated by
+              third-party vendors (including AI model providers and hosting
+              platforms). Your inputs may be transmitted to, processed by, and
+              temporarily stored on their systems. We cannot guarantee the
+              absolute security of such systems.
+            </li>
+          </ol>
+        </div>
+
+        {/* Liability */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">4. Liability</h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">Use at your own risk:</span> The
+              Assistant is provided on an{" "}
+              <span className="font-semibold">“as-is” and “as-available”</span>{" "}
+              basis. To the fullest extent permitted by applicable law:
+              <ul className="list-disc list-inside ml-6 mt-2 space-y-2">
+                <li>
+                  We disclaim all warranties, express or implied, including but
+                  not limited to fitness for a particular purpose, merchantability
+                  and non-infringement.
+                </li>
+                <li>
+                  We do not warrant that Ingrid’s outputs will be correct,
+                  complete, up to date, or suitable for your individual
+                  situation.
+                </li>
+              </ul>
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                No responsibility for resulting decisions:
+              </span>{" "}
+              You are solely responsible for how you interpret and use the
+              information provided. Under no circumstances shall{" "}
+              {OWNER_NAME}, collaborators, partners, or affiliates be liable for
+              any direct, indirect, incidental, consequential, special, or
+              punitive damages arising from or related to your use of the
+              Assistant.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                Modification or discontinuation:
+              </span>{" "}
+              We may update, limit, suspend, or discontinue Ingrid (in whole or
+              in part) at any time without prior notice.
+            </li>
+          </ol>
+        </div>
+
+        {/* User Responsibilities */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">5. User Responsibilities</h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">Age requirement:</span> Ingrid is
+              intended for users aged{" "}
+              <span className="font-semibold">18 years or older</span>. If you
+              are using it on behalf of someone else (for example, a child or
+              elderly family member), you are responsible for making safe,
+              independent judgements.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">Prohibited conduct:</span> You
+              agree not to:
+              <ul className="list-disc list-inside ml-6 mt-2 space-y-2">
+                <li>
+                  Submit content that is defamatory, abusive, hateful, harassing,
+                  racist, discriminatory, obscene, or illegal.
+                </li>
+                <li>
+                  Use the Assistant to promote self-harm, violence, or unlawful
+                  activities.
+                </li>
+                <li>
+                  Attempt to hack, disrupt, overload, reverse engineer, or
+                  otherwise interfere with the operation or security of the
+                  Assistant.
+                </li>
+                <li>
+                  Misrepresent outputs as advice from a doctor, nutritionist, or
+                  regulatory authority.
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        {/* Data, Privacy & Use of Content */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">
+            6. Data, Privacy &amp; Use of Content
+          </h3>
+          <ol className="list-decimal list-inside space-y-3">
+            <li className="text-gray-700">
+              <span className="font-semibold">No guarantee of privacy:</span>{" "}
+              While we aim to handle data responsibly, we{" "}
+              <span className="font-semibold">cannot guarantee</span> complete
+              privacy, confidentiality, or security of your inputs or
+              conversations. Do not share sensitive personal information (for
+              example: full medical history, addresses, financial data).
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">Use for improvement:</span> Your
+              inputs and Ingrid’s outputs may be reviewed or used in aggregate
+              to improve the Assistant, design new features, or for research and
+              analytics related to this project.
+            </li>
+            <li className="text-gray-700">
+              <span className="font-semibold">
+                Ownership &amp; permitted use:
+              </span>{" "}
+              You may use Ingrid’s responses for your own personal, non-commercial
+              use. We retain the right to use anonymised inputs and outputs to
+              iterate on the product, content, or related services.
+            </li>
+          </ol>
+        </div>
+
+        {/* Indemnification */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">7. Indemnification</h3>
+          <p className="text-gray-700">
+            By using Ingrid, you agree to indemnify and hold harmless{" "}
+            {OWNER_NAME}, collaborators, partners, affiliated entities, and
+            representatives from any claims, losses, liabilities, damages, or
+            expenses (including reasonable legal fees) arising out of your use
+            of the Assistant, violation of these terms, or misuse of the
+            information provided.
+          </p>
+        </div>
+
+        {/* Governing Law */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">
+            8. Governing Law &amp; Jurisdiction
+          </h3>
+          <p className="text-gray-700">
+            These Safety &amp; Terms are governed by the applicable laws of{" "}
+            <span className="font-semibold">India</span>, unless otherwise
+            required by local law in your country of residence. Any disputes
+            arising out of or in connection with the use of Ingrid shall, where
+            permitted, be subject to the jurisdiction of the competent courts in
+            India.
+          </p>
+        </div>
+
+        {/* Acceptance */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">9. Acceptance of Terms</h3>
+          <p className="text-gray-700">
+            By continuing to use Ingrid – The Ingredient Fairy, you confirm that
+            you have read, understood, and agreed to these Safety &amp; Terms.
+            If you do not agree with any part of these terms, please discontinue
+            use of the Assistant.
+          </p>
+        </div>
+
+        <div className="mt-8 text-sm text-gray-600">
+          <p>Last Updated: November 27, 2025</p>
+        </div>
+      </div>
+    </div>
+  );
 }
