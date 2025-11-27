@@ -167,7 +167,7 @@ export default function Chat() {
   // Realistic Magical example ingredient lists
 const exampleIngredients = [
   {
-    name: "🍿 Breakfast Cereal",
+    name: "🥣 Breakfast Cereal",
     ingredients: "Whole Grain Oats, Sugar, Corn Starch, Honey, Brown Sugar Syrup, Salt, Tripotassium Phosphate, Canola Oil, Natural Flavor, Annatto Extract (color)",
     color: "from-amber-100 to-orange-100 border-amber-200 text-amber-700"
   },
