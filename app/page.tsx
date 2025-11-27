@@ -249,7 +249,10 @@ const exampleIngredients = [
                       onClick={() => handleExampleClick(example.ingredients)}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <span className="font-semibold text-sm">{example.name}</span>
+                        <span className="font-semibold text-sm">
+                          <span className="text-xl mr-1">{example.name.split(' ')[0]}</span>
+                          {example.name.split(' ').slice(1).join(' ')}
+                        </span>
                         <ArrowUp className="size-4 opacity-0 group-hover:opacity-100 transition-opacity rotate-45" />
                       </div>
                       <p className="text-xs opacity-70 leading-relaxed">{example.ingredients}</p>
