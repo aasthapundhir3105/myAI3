@@ -35,12 +35,14 @@ export default function Terms() {
               <span className="font-semibold">Educational tool only:</span>{" "}
               Ingrid is designed to help you understand{" "}
               <span className="font-semibold">
-                ingredients in food, beverages and personal care topicals
+                ingredients in packaged foods and beverages
               </span>{" "}
-              in simple language (for example: potential irritation, general
+              in simple language (for example: potential concerns, general
               safety flags, and commonly known regulatory or research trends).
               It is intended for{" "}
-              <span className="font-semibold">informational and educational</span>{" "}
+              <span className="font-semibold">
+                informational and educational
+              </span>{" "}
               purposes only.
             </li>
             <li className="text-gray-700">
@@ -48,18 +50,19 @@ export default function Terms() {
                 No medical or nutrition advice:
               </span>{" "}
               Ingrid does <span className="font-semibold">not</span> provide
-              medical, dermatological, nutritional, paediatric, or pregnancy
-              advice. It cannot diagnose, treat, or manage any condition, nor
-              confirm whether a specific product is “safe” for you.
+              medical, nutritional, paediatric, pregnancy-related, or
+              therapeutic advice. It cannot diagnose, treat, or manage any
+              condition, nor confirm whether a specific product is “safe” for
+              you.
             </li>
             <li className="text-gray-700">
               <span className="font-semibold">
                 Not a substitute for professionals:
               </span>{" "}
-              Always consult a qualified doctor, dermatologist, paediatrician,
-              dietician, allergist, or other health professional before making
-              decisions related to your health, your child’s health, allergies,
-              pregnancy or medical conditions.
+              Always consult a qualified doctor, paediatrician, dietician,
+              allergist, or other health professional before making decisions
+              related to your health, your child’s health, allergies, pregnancy
+              or medical conditions.
             </li>
           </ol>
         </div>
@@ -71,17 +74,19 @@ export default function Terms() {
           </h3>
           <ol className="list-decimal list-inside space-y-3">
             <li className="text-gray-700">
-              <span className="font-semibold">Pregnancy &amp; breastfeeding:</span>{" "}
+              <span className="font-semibold">
+                Pregnancy &amp; breastfeeding:
+              </span>{" "}
               Ingrid may label some ingredients as “caution” for pregnancy, but
               this is only a generic indication. It cannot replace personalised
-              medical advice. Always consult your doctor before using products
-              while pregnant or breastfeeding.
+              medical advice. Always consult your doctor before consuming or
+              avoiding foods during pregnancy or breastfeeding.
             </li>
             <li className="text-gray-700">
               <span className="font-semibold">
                 Babies, toddlers &amp; children:
               </span>{" "}
-              Products used on or consumed by children require extra caution.
+              Foods and drinks consumed by children require extra caution.
               Ingrid’s responses are{" "}
               <span className="font-semibold">
                 not tailored to a child’s age, weight, or medical history
@@ -118,7 +123,9 @@ export default function Terms() {
               professional advice).
             </li>
             <li className="text-gray-700">
-              <span className="font-semibold">Changing evidence &amp; laws:</span>{" "}
+              <span className="font-semibold">
+                Changing evidence &amp; laws:
+              </span>{" "}
               Scientific research and regulations evolve. Information about
               ingredients, “banned/restricted” status, and safety classifications
               may change over time. Ingrid may not always reflect the latest
