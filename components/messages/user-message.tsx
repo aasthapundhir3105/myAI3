@@ -15,16 +15,44 @@ export function UserMessage({ message }: { message: UIMessage }) {
 
         {/* User message bubble */}
         <div className="max-w-lg w-fit px-4 py-3 rounded-2xl bg-blue-50 border border-blue-100 shadow-sm whitespace-pre-wrap">
-          <div className="text-sm">
+          <div className="flex flex-col gap-2 text-sm">
             {message.parts.map((part, i) => {
-              switch (part.type) {
-                case "text":
-                  return (
-                    <Response key={`${message.id}-${i}`}>{part.text}</Response>
-                  );
-                default:
-                  return null;
+              const anyPart = part as any;
+
+              if (part.type === "text") {
+                return (
+                  <Response key={`${message.id}-text-${i}`}>
+                    {part.text}
+                  </Response>
+                );
               }
+
+              // 🔮 Future-proof: if messages ever include image parts, show them nicely
+              if (
+                anyPart.type === "image" &&
+                (anyPart.url || anyPart.imageUrl || anyPart.data)
+              ) {
+                const src =
+                  anyPart.url || anyPart.imageUrl || anyPart.data || "";
+
+                if (!src) return null;
+
+                return (
+                  <div
+                    key={`${message.id}-image-${i}`}
+                    className="mt-1 rounded-xl overflow-hidden border border-blue-100 bg-white"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt="User uploaded"
+                      className="max-h-64 rounded-xl object-contain"
+                    />
+                  </div>
+                );
+              }
+
+              return null;
             })}
           </div>
         </div>
