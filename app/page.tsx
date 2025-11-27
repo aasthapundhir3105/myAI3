@@ -276,12 +276,12 @@ export default function Chat() {
             <ChatHeader>
               <ChatHeaderBlock />
               <ChatHeaderBlock className="justify-center items-center">
-                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-gradient-to-br from-green-400 to-blue-400">
-                  <AvatarImage src="/ingrid" />
-                  <AvatarFallback className="bg-gradient-to-br from-green-400 to-blue-400 text-white">
-                    <Wand2 className="size-5" />
-                  </AvatarFallback>
-                </Avatar>
+                <Avatar className="size-10 ring-2 ring-white shadow-lg bg-white rounded-full overflow-hidden">
+  <AvatarImage src="/ingrid.png" alt="Ingrid Icon" />
+  <AvatarFallback className="bg-white text-green-600 font-bold">
+    I
+  </AvatarFallback>
+</Avatar>
                 <div className="flex items-center gap-3 ml-3">
                   <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-green-100">
                     <Wand2 className="size-5 text-green-600" />
