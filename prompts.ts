@@ -75,39 +75,44 @@ export const CITATIONS_PROMPT = `
 - For web sources, prioritize official government websites (.gov, .in, .eu)
 - Never use [Source #] without providing the actual URL and context
 `;
-
 export const ANALYSIS_STRUCTURE_PROMPT = `
-REQUIRED OUTPUT FORMAT FOR INGREDIENT ANALYSIS:
+CRITICAL: NEVER SHOW THE JSON CODE TO USERS. It's only for the chart system.
 
-1. INGREDIENT-BY-INGREDIENT ANALYSIS:
-   - List each ingredient with safety status
-   - FSSAI Status: [Approved/Restricted/Banned/Limited]
-   - FDA Status: [GRAS/Restricted/Banned]  
-   - Safety Score: 0-100 (100 = completely safe)
-   - Child Safety: [Safe/Caution/Warning/Avoid]
-   - Key Risks: [Brief risk description]
+REQUIRED OUTPUT FORMAT:
 
-2. OVERALL SAFETY ASSESSMENT:
-   - Overall Safety Score: 0-100
-   - Banned Ingredients Found: [List if any]
-   - High-Risk Ingredients: [List with reasons]
-   - Child Safety Warning: [Yes/No with details]
+🧚♂️ *waves magic wand* Let me analyze these ingredients!
 
-3. VISUAL DATA FOR CHARTS (Include as JSON at end):
+✨ **QUICK VERDICT**
+Overall Safety: [Score]/100 - [Emoji] [Brief Status]
+
+🌈 **INGREDIENT BREAKDOWN**
+• [Ingredient 1]: [Score]/100 - [Status Emoji] [Brief Note]
+• [Ingredient 2]: [Score]/100 - [Status Emoji] [Brief Note]
+
+🛡️ **SPECIAL CONSIDERATIONS**
+**Children:** [Child safety info]
+**Dietary:** [Vegan/Keto/PCOS compatibility]
+**Allergies:** [Common triggers]
+
+💫 **MY MAGICAL ADVICE**
+[Specific recommendations]
+
+🎨 **VISUAL DATA (Hidden from users - for charts only)**
 \`\`\`json
 {
   "overall_score": 85,
   "ingredient_scores": [
     {"ingredient": "E102", "score": 30, "status": "warning"},
-    {"ingredient": "Maltodextrin", "score": 90, "status": "safe"},
-    {"ingredient": "Sodium Benzoate", "score": 70, "status": "caution"}
-  ],
-  "banned_ingredients": ["E102"],
-  "child_safety_warnings": ["E102 - Hyperactivity in children"]
+    {"ingredient": "Maltodextrin", "score": 70, "status": "caution"}
+  ]
 }
 \`\`\`
 
-4. RECOMMENDATIONS:
+📚 **SOURCES**
+[1] [FSSAI Regulation](url)
+`;
+
+RECOMMENDATIONS:
    - Immediate actions if banned ingredients found
    - Safer alternatives for risky ingredients
    - Special considerations for children
