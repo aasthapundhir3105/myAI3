@@ -35,7 +35,7 @@ import {
   useState,
   useRef,
   type ChangeEvent,
-  type ReactNode,      // 👈 added
+  type ReactNode,
 } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Link from "next/link";
@@ -382,12 +382,12 @@ export default function Chat() {
     };
   });
 
-  // Left-panel health modes config (desktop-only)
+  // Health modes config
   const healthModes: {
     key: ModeKey;
     label: string;
     description: string;
-    icon: ReactNode;         // 👈 changed from JSX.Element
+    icon: ReactNode;
   }[] = [
     {
       key: "general",
@@ -490,6 +490,44 @@ export default function Chat() {
 
         {/* Main Chat Area with Magical Background + Health Modes Panel */}
         <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[190px]">
+          {/* Mobile health modes bar */}
+          <div className="md:hidden mb-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-[11px] font-semibold text-green-700 tracking-wide">
+                  HEALTH MODES
+                </span>
+                <span className="text-[10px] text-green-600/80">
+                  Tap to change focus
+                </span>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                {healthModes.map((mode) => {
+                  const isActive = selectedMode === mode.key;
+                  return (
+                    <button
+                      key={mode.key}
+                      type="button"
+                      onClick={() => setSelectedMode(mode.key)}
+                      className={`flex items-center gap-2 rounded-2xl border px-3 py-1.5 text-[11px] whitespace-nowrap transition-all ${
+                        isActive
+                          ? "bg-gradient-to-br from-green-50 to-blue-50 border-green-400 shadow-sm"
+                          : "bg-white/90 border-green-100 hover:border-green-300"
+                      }`}
+                    >
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-50 border border-green-100">
+                        {mode.icon}
+                      </span>
+                      <span className="font-semibold text-green-900">
+                        {mode.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           <div className="flex justify-center min-h-full">
             <div className="flex w-full max-w-6xl gap-6">
               {/* Left: Health Modes (desktop only) */}
@@ -685,9 +723,7 @@ export default function Chat() {
                             <Button
                               className="absolute right-2 top-2 rounded-full bg-gradient-to-br from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                               type="submit"
-                              disabled={
-                                !field.value.trim() && !attachedFiles
-                              }
+                              disabled={!field.value.trim() && !attachedFiles}
                               size="icon"
                             >
                               <ArrowUp className="size-5" />
