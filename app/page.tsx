@@ -434,9 +434,9 @@ export default function Chat() {
     <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
       <main className="w-full bg-transparent h-screen relative">
         {/* Magical Header with Fairy Gradient */}
-        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white/90 via-white/70 to-transparent backdrop-blur-sm border-b border-green-100 overflow-visible pb-16">
+       <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-green-100 overflow-visible pb-4">
           <div className="relative overflow-visible">
-            <ChatHeader>
+    <        ChatHeader>
               <ChatHeaderBlock />
               <ChatHeaderBlock className="justify-center items-center">
                 {/* Ingrid Icon Avatar */}
