@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
 import {
   ArrowUp,
-  Baby,
   Image as ImageIcon,
   Loader2,
   Plus,
@@ -434,29 +433,31 @@ export default function Chat() {
     <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
       <main className="w-full bg-transparent h-screen relative">
         {/* Magical Header with Fairy Gradient */}
-       <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-green-100 overflow-visible py-2">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-green-100 overflow-visible py-1">
           <div className="relative overflow-visible">
-    <        ChatHeader>
+            <ChatHeader>
               <ChatHeaderBlock />
-              <ChatHeaderBlock className="justify-center items-center">
-                {/* Ingrid Icon Avatar */}
-                <Avatar className="size-20 ring-2 ring-white shadow-lg bg-white rounded-full overflow-hidden">
+
+              <ChatHeaderBlock className="justify-center items-center gap-2">
+                {/* Ingrid Icon Avatar (smaller) */}
+                <Avatar className="size-14 ring-2 ring-white shadow-md bg-white rounded-full overflow-hidden">
                   <AvatarImage src="/icon.png" alt="Ingrid Icon" />
                   <AvatarFallback className="bg-white text-green-600 font-bold">
                     I
                   </AvatarFallback>
                 </Avatar>
 
-                <div className="flex items-center gap-3 ml-3">
-                  <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-2xl shadow-sm border border-green-100">
-                    <Wand2 className="size-5 text-green-600" />
-                    <p className="tracking-tight text-lg font-semibold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                <div className="flex items-center gap-2 ml-2">
+                  <div className="flex items-center gap-2 bg-white/90 px-3 py-1.5 rounded-2xl shadow-sm border border-green-100">
+                    <Wand2 className="size-4 text-green-600" />
+                    <p className="tracking-tight text-base font-semibold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                       {AI_NAME}
                     </p>
-                    <Sparkles className="size-4 text-yellow-400" />
+                    <Sparkles className="size-3 text-yellow-400" />
                   </div>
                 </div>
               </ChatHeaderBlock>
+
               <ChatHeaderBlock className="justify-end">
                 <Button
                   variant="outline"
@@ -473,7 +474,7 @@ export default function Chat() {
         </div>
 
         {/* Safety disclaimer banner */}
-        <div className="fixed top-[72px] left-0 right-0 z-40 flex justify-center px-4">
+        <div className="fixed top-[64px] left-0 right-0 z-40 flex justify-center px-4">
           <div className="max-w-6xl w-full">
             <div className="mt-1 text-[11px] md:text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-4 py-1 shadow-sm flex items-center gap-2">
               <span className="text-sm">⚠️</span>
@@ -489,7 +490,7 @@ export default function Chat() {
         </div>
 
         {/* Main Chat Area with Magical Background + Health Modes Panel */}
-        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[100px] pb-[190px]">
+        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[110px] pb-[190px]">
           {/* Mobile health modes bar */}
           <div className="md:hidden mb-4">
             <div className="max-w-6xl mx-auto">
