@@ -434,7 +434,7 @@ export default function Chat() {
     <div className="flex h-screen items-center justify-center font-sans bg-gradient-to-br from-green-50 via-blue-50 to-cyan-50">
       <main className="w-full bg-transparent h-screen relative">
         {/* Magical Header with Fairy Gradient */}
-       <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-green-100 overflow-visible pb-4">
+       <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-green-100 overflow-visible py-2">
           <div className="relative overflow-visible">
     <        ChatHeader>
               <ChatHeaderBlock />
