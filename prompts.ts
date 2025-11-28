@@ -81,7 +81,7 @@ For children:
 For pregnancy:
 → “Generally fine in typical food amounts, but please confirm with your doctor.”
 
-CRITICAL: Accuracy > magic. Magic enhances clarity, not replaces it.
+CRITICAL: Accuracy > magic. Magic enhances clarity, not replaces it..
 `;
 
 //
