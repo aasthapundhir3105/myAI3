@@ -28,7 +28,7 @@ import { useEffect, useState, useRef, type ChangeEvent } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Link from "next/link";
 import { IngredientSafetyChart } from "@/components/ui/safetychart";
-import { MessageReadAloud } from "@/components/messages/message-read-aloud";
+// 🔴 removed: import { MessageReadAloud } from "@/components/messages/message-read-aloud";
 
 const formSchema = z.object({
   // ✅ Allow empty string (we validate against image in onSubmit)
@@ -127,14 +127,6 @@ export default function Chat() {
     }
 
     return null;
-  };
-
-  // Helper to extract text from a message
-  const getMessageText = (message: UIMessage): string => {
-    return message.parts
-      .filter((part) => part.type === "text")
-      .map((part) => ("text" in part ? part.text : ""))
-      .join(" ");
   };
 
   // Initialize speech synthesis
@@ -452,7 +444,7 @@ export default function Chat() {
               </div>
             )}
 
-            {/* Messages Area with Safety Charts & Read Aloud */}
+            {/* Messages Area with Safety Charts */}
             {isClient ? (
               <>
                 <MessageWall
@@ -461,30 +453,6 @@ export default function Chat() {
                   durations={durations}
                   onDurationChange={handleDurationChange}
                 />
-
-                {/* Add Read Aloud buttons for assistant messages */}
-                {messages
-                  .filter((message) => message.role === "assistant")
-                  .map((message) => {
-                    const rawText = getMessageText(message);
-                    const messageText = stripJsonBlocks(rawText);
-
-                    if (!messageText || messageText === WELCOME_MESSAGE)
-                      return null;
-
-                    return (
-                      <div
-                        key={`read-aloud-${message.id}`}
-                        className="w-full max-w-3xl flex justify-start mt-2"
-                      >
-                        <MessageReadAloud
-                          text={messageText}
-                          messageId={message.id}
-                        />
-                      </div>
-                    );
-                  })
-                  .filter(Boolean)}
 
                 {/* Render safety charts for messages that have JSON data */}
                 {messages
