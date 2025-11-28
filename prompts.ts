@@ -1,4 +1,6 @@
-import { AI_NAME, OWNER_NAME, DATE_AND_TIME } from "./config";
+// prompts.ts
+
+import { AI_NAME, OWNER_NAME, DATE_AND_TIME } from "@/config";
 
 //
 //  ✨ IDENTITY PROMPT
