@@ -35,6 +35,7 @@ import {
   useState,
   useRef,
   type ChangeEvent,
+  type ReactNode,      // 👈 added
 } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, WELCOME_MESSAGE } from "@/config";
 import Link from "next/link";
@@ -386,7 +387,7 @@ export default function Chat() {
     key: ModeKey;
     label: string;
     description: string;
-    icon: JSX.Element;
+    icon: ReactNode;         // 👈 changed from JSX.Element
   }[] = [
     {
       key: "general",
